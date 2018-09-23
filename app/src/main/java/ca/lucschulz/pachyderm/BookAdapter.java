@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class BookAdapter {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
     private List<Book> bookList;
 
@@ -26,6 +26,12 @@ public class BookAdapter {
     }
 
     @Override
+    public void onBindViewHolder(BookViewHolder holder, int position) {
+        holder.title.setText(bookList.get(position).getTitle());
+        holder.author.setText(bookList.get(position).getAuthor());
+    }
+
+    @Override
     public int getItemCount() {
         return bookList.size();
     }
@@ -38,7 +44,7 @@ public class BookAdapter {
             super(view);
 
             title = view.findViewById(R.id.title);
-            author = view.findViewById((R.id.author);
+            author = view.findViewById((R.id.author));
         }
     }
 }
