@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+//import java.lang.Object;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         initBookData();
+
+        SqlHelper sqlHelper = new SqlHelper(this);
+
+        Toast.makeText(getApplicationContext(), "This is a toast message.", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -38,15 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         Book book2 = new Book("Beginning Android 3", "Mark Murphy");
         bookList.add(book2);
-
-//        book = new Book("Unlocking Android", " W. Frank Ableson");
-//        bookList.add(book);
-//
-//        book = new Book("Android Tablet Development", "Wei Meng Lee");
-//        bookList.add(book);
-//
-//        book = new Book("Android Apps Security", "Sheran Gunasekera");
-//        bookList.add(book);
 
         mAdapter.notifyDataSetChanged();
     }
