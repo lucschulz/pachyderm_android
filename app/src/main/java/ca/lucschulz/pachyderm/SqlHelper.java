@@ -80,4 +80,9 @@ public class SqlHelper extends SQLiteOpenHelper {
 
         return list;
     }
+
+    public void clearTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TASK_ITEMS, null, null);
+    }
 }

@@ -32,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        SqlHelper helper = new SqlHelper(this);
+        helper.clearTable();
+
         retrieveTaskItems();
+
 
         Button btnAddItem = findViewById(R.id.btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +62,18 @@ public class MainActivity extends AppCompatActivity {
         SqlHelper helper = new SqlHelper(this);
         helper.insertNewTaskItem(taskName, date);
 
-
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void populateList(String taskName, Date date) {
+
+        TaskItems ti = new TaskItems();
+        ti.setTaskItem(taskName);
+        ti.setDateAdded(date);
+        taskList.add(ti);
+        mAdapter.notifyDataSetChanged();
+
+        Toast.makeText(getApplicationContext(), "List populated.", Toast.LENGTH_SHORT).show();
     }
 
     private void retrieveTaskItems() {
@@ -67,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> list = helper.retrieveItems();
 
         for (String s : list) {
-            addNewTaskItem(s, new Date());
+            populateList(s, new Date());
         }
     }
 }
