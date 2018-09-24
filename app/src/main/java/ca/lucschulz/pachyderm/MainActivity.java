@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        SqlHelper helper = new SqlHelper(this);
-        helper.clearTable();
+//        SqlHelper helper = new SqlHelper(this);
+//        helper.clearTable();
 
         retrieveTaskItems();
 
