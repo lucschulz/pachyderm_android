@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<TaskItems> taskList = new ArrayList<>();
     private TaskItemsAdapter mAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                EditText et = (EditText)findViewById(R.id.etAddItem);
+                EditText et = findViewById(R.id.etAddItem);
                 String text = String.valueOf(et.getText());
 
                 addNewTaskItem(text, new Date());
             }
         });
-
-
     }
 
     private void addNewTaskItem(String taskName, Date date) {
@@ -57,16 +53,10 @@ public class MainActivity extends AppCompatActivity {
         taskList.add(ti);
         mAdapter.notifyDataSetChanged();
 
+        SqlHelper helper = new SqlHelper(this);
+        helper.insertNewTaskItem(taskName, date);
+
+
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
-    }
-
-    private void addTaskItems() {
-        TaskItems ti = new TaskItems("Example task", new Date(), false);
-        taskList.add(ti);
-
-        TaskItems ti2 = new TaskItems("Another example", new Date(), false);
-        taskList.add(ti2);
-
-        mAdapter.notifyDataSetChanged();
     }
 }

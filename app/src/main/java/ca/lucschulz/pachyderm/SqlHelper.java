@@ -1,8 +1,12 @@
 package ca.lucschulz.pachyderm;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.Date;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
@@ -13,8 +17,6 @@ public class SqlHelper extends SQLiteOpenHelper {
     private static final String KEY_TASK_NAME = "task_name";
     private static final String KEY_DATE_ADDED = "date_added";
     private static final String KEY_COMPLETED = "completed";
-
-
 
     public SqlHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,5 +43,20 @@ public class SqlHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_ITEMS);
 
         onCreate(db);
+    }
+
+    public void insertNewTaskItem(String taskItem, Date dateAdded) {
+        try
+        {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues insertValues = new ContentValues();
+            insertValues.put(KEY_TASK_NAME, taskItem);
+            insertValues.put(KEY_DATE_ADDED, dateAdded.toString());
+            db.insert(TABLE_TASK_ITEMS, null, insertValues);
+        }
+        catch (Exception e)
+        {
+            Log.e("ERROR", e.toString());
+        }
     }
 }
