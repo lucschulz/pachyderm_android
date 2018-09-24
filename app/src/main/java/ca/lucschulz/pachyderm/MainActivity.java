@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        retrieveTaskItems();
+        
         Button btnAddItem = findViewById(R.id.btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
 
@@ -58,5 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void retrieveTaskItems() {
+        SqlHelper helper = new SqlHelper(this);
+        List<String> list = helper.retrieveItems();
+
+        for (String s : list) {
+            addNewTaskItem(s, new Date());
+        }
     }
 }

@@ -2,11 +2,14 @@ package ca.lucschulz.pachyderm;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
@@ -58,5 +61,23 @@ public class SqlHelper extends SQLiteOpenHelper {
         {
             Log.e("ERROR", e.toString());
         }
+    }
+
+    public List<String> retrieveItems() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS, null);
+
+        List<String> list = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+                String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
+
+                list.add(name);
+                cursor.moveToNext();
+            }
+        }
+
+        return list;
     }
 }
