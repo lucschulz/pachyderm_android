@@ -63,22 +63,27 @@ public class SqlHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<String> retrieveItems() {
+    public List<TaskItem> retrieveItems() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS, null);
 
         List<String> list = new ArrayList<>();
+        List<TaskItem> taskItems = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             while(!cursor.isAfterLast()) {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
+
+                TaskItem ti = new TaskItem();
+                ti.setTaskItem(name);
+                taskItems.add(ti);
 
                 list.add(name);
                 cursor.moveToNext();
             }
         }
 
-        return list;
+        return taskItems;
     }
 
     public void clearTable() {

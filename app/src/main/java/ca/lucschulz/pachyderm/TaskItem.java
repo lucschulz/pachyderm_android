@@ -2,15 +2,15 @@ package ca.lucschulz.pachyderm;
 
 import java.util.Date;
 
-public class TaskItems {
+public class TaskItem {
 
     private String taskItem;
     private Date dateAdded;
     private boolean completed;
 
-    public TaskItems(){}
+    public TaskItem(){}
 
-    public TaskItems(String taskItem, Date dateAdded, boolean completed) {
+    public TaskItem(String taskItem, Date dateAdded, boolean completed) {
         this.taskItem = taskItem;
         this.dateAdded = dateAdded;
         this.completed = completed;

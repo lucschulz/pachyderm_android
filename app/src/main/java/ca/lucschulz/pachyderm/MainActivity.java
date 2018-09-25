@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<TaskItems> taskList = new ArrayList<>();
+    private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter mAdapter;
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNewTaskItem(String taskName, Date date) {
 
-        TaskItems ti = new TaskItems();
+        TaskItem ti = new TaskItem();
         ti.setTaskItem(taskName);
         ti.setDateAdded(date);
         taskList.add(ti);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateList(String taskName, Date date) {
 
-        TaskItems ti = new TaskItems();
+        TaskItem ti = new TaskItem();
         ti.setTaskItem(taskName);
         ti.setDateAdded(date);
         taskList.add(ti);
@@ -78,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void retrieveTaskItems() {
         SqlHelper helper = new SqlHelper(this);
-        List<String> list = helper.retrieveItems();
+        List<TaskItem> list = helper.retrieveItems();
 
-        for (String s : list) {
-            populateList(s, new Date());
+        for (TaskItem ti : list) {
+            String name = ti.getTaskItem();
+            populateList(name, new Date());
         }
     }
 }

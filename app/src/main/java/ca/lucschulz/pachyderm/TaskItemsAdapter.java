@@ -10,9 +10,9 @@ import java.util.List;
 
 public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.TaskItemHolder> {
 
-    private List<TaskItems> taskList;
+    private List<TaskItem> taskList;
 
-    public TaskItemsAdapter(List<TaskItems> taskList) {
+    public TaskItemsAdapter(List<TaskItem> taskList) {
         this.taskList = taskList;
     }
 
