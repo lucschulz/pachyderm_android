@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateList(String taskName, Date date) {
-
         TaskItem ti = new TaskItem();
         ti.setTaskItem(taskName);
         ti.setDateAdded(date);
@@ -85,7 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
         for (TaskItem ti : list) {
             String name = ti.getTaskItem();
-            populateList(name, new Date());
+            Date date = ti.getDateAdded();
+
+
+            populateList(name, date);
         }
     }
 }
