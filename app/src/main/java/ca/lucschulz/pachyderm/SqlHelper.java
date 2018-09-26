@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "db_items";
+    private static final String DATABASE_NAME = "db_items.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_TASK_ITEMS = "task_items";
     private static final String KEY_ID = "id";
@@ -21,7 +23,7 @@ public class SqlHelper extends SQLiteOpenHelper {
     private static final String KEY_DATE_ADDED = "date_added";
     private static final String KEY_COMPLETED = "completed";
 
-    public SqlHelper(Context context) {
+    SqlHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -48,13 +50,13 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertNewTaskItem(String taskItem, Date dateAdded) {
+    void insertNewTaskItem(String taskItem, Date dateAdded) {
         try
         {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues insertValues = new ContentValues();
             insertValues.put(KEY_TASK_NAME, taskItem);
-            insertValues.put(KEY_DATE_ADDED, dateAdded.toString());
+            insertValues.put(KEY_DATE_ADDED, Utils.getDateTime(dateAdded));
             db.insert(TABLE_TASK_ITEMS, null, insertValues);
         }
         catch (Exception e)
@@ -63,11 +65,10 @@ public class SqlHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<TaskItem> retrieveItems() {
+    List<TaskItem> retrieveItems() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS, null);
 
-        List<String> list = new ArrayList<>();
         List<TaskItem> taskItems = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
@@ -78,7 +79,6 @@ public class SqlHelper extends SQLiteOpenHelper {
                 ti.setTaskItem(name);
                 taskItems.add(ti);
 
-                list.add(name);
                 cursor.moveToNext();
             }
         }
@@ -86,7 +86,7 @@ public class SqlHelper extends SQLiteOpenHelper {
         return taskItems;
     }
 
-    public void clearTable() {
+    void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TASK_ITEMS, null, null);
     }

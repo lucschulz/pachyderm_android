@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 EditText et = findViewById(R.id.etAddItem);
                 String text = String.valueOf(et.getText());
 
-                addNewTaskItem(text, new Date());
+
+                Date currentDate = Calendar.getInstance(TimeZone.getTimeZone("EST")).getTime();
+
+//                Toast.makeText(getApplicationContext(), currentDate.toString(), Toast.LENGTH_SHORT).show();
+
+
+                addNewTaskItem(text, currentDate);
             }
         });
     }
