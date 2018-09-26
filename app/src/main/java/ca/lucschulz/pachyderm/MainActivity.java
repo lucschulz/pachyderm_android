@@ -48,12 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText et = findViewById(R.id.etAddItem);
                 String text = String.valueOf(et.getText());
 
-
                 Date currentDate = Calendar.getInstance(TimeZone.getTimeZone("EST")).getTime();
-
-//                Toast.makeText(getApplicationContext(), currentDate.toString(), Toast.LENGTH_SHORT).show();
-
-
                 addNewTaskItem(text, currentDate);
             }
         });

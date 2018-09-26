@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,9 +76,19 @@ public class SqlHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             while(!cursor.isAfterLast()) {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
+                String date = cursor.getString(cursor.getColumnIndex(KEY_DATE_ADDED));
+
+                Date dt = null;
+                try {
+                    dt = Utils.convertStringToDate(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 TaskItem ti = new TaskItem();
                 ti.setTaskItem(name);
+                ti.setDateAdded(dt);
+
                 taskItems.add(ti);
 
                 cursor.moveToNext();
