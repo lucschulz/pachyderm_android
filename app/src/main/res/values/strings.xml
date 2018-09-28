@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pachyderm</string>
+    <string name="todo">Todo</string>
+    <string name="add_item">Add Item</string>
+    <string name="name">Name</string>
+    <string name="enter_text_here">Enter text here</string>
 </resources>

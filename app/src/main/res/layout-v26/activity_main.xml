@@ -42,15 +42,16 @@
         android:id="@+id/etAddItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="27dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="27dp"
+        android:layout_marginBottom="27dp"
+        android:autofillHints=""
+        android:contentDescription="@string/enter_text_here"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/name"
         app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvMainList"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/rvMainList" />
 
 </android.support.constraint.ConstraintLayout>

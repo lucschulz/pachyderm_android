@@ -11,12 +11,21 @@
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
+    <CheckBox
+        android:id="@+id/cbCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/dbId"
+        android:layout_alignParentTop="true"
+        android:checked="false" />
+
     <TextView
         android:id="@+id/dbId"
         android:textColor="@android:color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
+        android:layout_below="@id/cbCompleted"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -24,7 +33,8 @@
     <TextView
         android:id="@+id/taskItem"
         android:textColor="@android:color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
+        android:layout_marginLeft="32sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_below="@id/dbId"
@@ -34,9 +44,12 @@
     <TextView
         android:id="@+id/dateAdded"
         android:layout_below="@id/taskItem"
+        android:layout_marginLeft="32sp"
         android:layout_width="match_parent"
         android:textColor="@android:color/black"
         android:layout_height="wrap_content" />
+
+
 
 
 </RelativeLayout>
