@@ -77,6 +77,13 @@ public class SqlHelper extends SQLiteOpenHelper {
             while(!cursor.isAfterLast()) {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_DATE_ADDED));
+                int comp = cursor.getInt(cursor.getColumnIndex(KEY_COMPLETED));
+
+                Boolean completed;
+                if (comp > 0)
+                    completed = true;
+                else
+                    completed = false;
 
                 Date dt = null;
                 try {
@@ -88,6 +95,7 @@ public class SqlHelper extends SQLiteOpenHelper {
                 TaskItem ti = new TaskItem();
                 ti.setTaskItem(name);
                 ti.setDateAdded(dt);
+                ti.setCompleted(completed);
 
                 taskItems.add(ti);
 

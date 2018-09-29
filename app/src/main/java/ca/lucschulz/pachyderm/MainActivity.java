@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new TaskItemsAdapter(taskList);
 
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -37,9 +40,14 @@ public class MainActivity extends AppCompatActivity {
 //        SqlHelper helper = new SqlHelper(this);
 //        helper.clearTable();
 
+        SetAddItemClickListener();
         retrieveTaskItems();
 
+        // Attach to each instance of checkbox.
+//        SetCheckBoxClickListener();
+    }
 
+    private void SetAddItemClickListener() {
         Button btnAddItem = findViewById(R.id.btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
 
@@ -68,16 +76,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
     }
 
-    private void populateList(String taskName, Date date) {
-        TaskItem ti = new TaskItem();
-        ti.setTaskItem(taskName);
-        ti.setDateAdded(date);
-        taskList.add(ti);
-        mAdapter.notifyDataSetChanged();
-
-        Toast.makeText(getApplicationContext(), "List populated.", Toast.LENGTH_SHORT).show();
-    }
-
     private void retrieveTaskItems() {
         SqlHelper helper = new SqlHelper(this);
         List<TaskItem> list = helper.retrieveItems();
@@ -85,9 +83,21 @@ public class MainActivity extends AppCompatActivity {
         for (TaskItem ti : list) {
             String name = ti.getTaskItem();
             Date date = ti.getDateAdded();
+            Boolean completed = ti.getCompleted();
 
-
-            populateList(name, date);
+            populateList(name, date, completed);
         }
+    }
+
+    private void populateList(String taskName, Date date, Boolean completed) {
+        TaskItem ti = new TaskItem();
+        ti.setTaskItem(taskName);
+        ti.setDateAdded(date);
+        ti.setCompleted(completed);
+
+        taskList.add(ti);
+        mAdapter.notifyDataSetChanged();
+
+        Toast.makeText(getApplicationContext(), "List populated.", Toast.LENGTH_SHORT).show();
     }
 }
