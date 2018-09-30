@@ -16,6 +16,8 @@ import java.util.List;
 public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.TaskItemHolder> {
 
     private List<TaskItem> taskList;
+    private int position;
+    public TaskItemHolder holder;
 
     public TaskItemsAdapter(List<TaskItem> taskList) {
         this.taskList = taskList;
@@ -31,6 +33,10 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
+
+        this.position = position;
+        this.holder = holder;
+
         holder.taskId.setText(taskList.get(position).getTaskId());
         holder.taskItem.setText(taskList.get(position).getTaskItem());
 
@@ -38,19 +44,31 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
         holder.completed.setChecked(taskList.get(position).getCompleted());
 
-        holder.completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        String taskId = taskList.get(position).getTaskId();
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Log.d("Testing", "Checked.");
-                } else {
-                    Log.d("Testing", "Unchecked.");
-                }
-            }
-        });
+        holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId)));
     }
 
+    class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener
+    {
+        private int taskId;
+
+        public myCheckBoxChangeClicker(int taskId) {
+            this.taskId = taskId;
+        }
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                Log.d("Testing", "Checked.");
+                //TODO Perform query that marks the app completed.
+
+
+            } else {
+                Log.d("Testing", "Unchecked.");
+                //TODO Perform query that marks the app not completed.
+            }
+        }
+    }
 
     @Override
     public int getItemCount() {
