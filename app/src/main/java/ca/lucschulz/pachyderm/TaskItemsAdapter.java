@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.TaskItemHolder> {
@@ -30,8 +31,11 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
+        holder.taskId.setText(taskList.get(position).getTaskId());
         holder.taskItem.setText(taskList.get(position).getTaskItem());
-        holder.dateAdded.setText(taskList.get(position).getDateAdded().toString());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
         holder.completed.setChecked(taskList.get(position).getCompleted());
 
         holder.completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -40,8 +44,7 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Log.d("Testing", "Checked.");
-                }
-                else{
+                } else {
                     Log.d("Testing", "Unchecked.");
                 }
             }
@@ -50,10 +53,13 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
 
     @Override
-    public int getItemCount() { return taskList.size();}
+    public int getItemCount() {
+        return taskList.size();
+    }
 
 
     public class TaskItemHolder extends RecyclerView.ViewHolder {
+        public TextView taskId;
         public TextView taskItem;
         public TextView dateAdded;
         public CheckBox completed;
@@ -61,6 +67,7 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         public TaskItemHolder(View view) {
             super(view);
 
+            taskId = view.findViewById(R.id.tvTaskId);
             taskItem = view.findViewById(R.id.taskItem);
             dateAdded = view.findViewById(R.id.dateAdded);
             completed = view.findViewById(R.id.cbCompleted);

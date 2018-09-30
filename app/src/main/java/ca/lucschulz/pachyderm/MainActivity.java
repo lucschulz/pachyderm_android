@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         SetAddItemClickListener();
         retrieveTaskItems();
-
-        // Attach to each instance of checkbox.
-//        SetCheckBoxClickListener();
     }
 
     private void SetAddItemClickListener() {
@@ -81,16 +76,18 @@ public class MainActivity extends AppCompatActivity {
         List<TaskItem> list = helper.retrieveItems();
 
         for (TaskItem ti : list) {
+            String taskId = ti.getTaskId();
             String name = ti.getTaskItem();
             Date date = ti.getDateAdded();
             Boolean completed = ti.getCompleted();
 
-            populateList(name, date, completed);
+            populateList(taskId, name, date, completed);
         }
     }
 
-    private void populateList(String taskName, Date date, Boolean completed) {
+    private void populateList(String taskId, String taskName, Date date, Boolean completed) {
         TaskItem ti = new TaskItem();
+        ti.setTaskId(taskId);
         ti.setTaskItem(taskName);
         ti.setDateAdded(date);
         ti.setCompleted(completed);
