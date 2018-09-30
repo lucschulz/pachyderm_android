@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
 
-        mAdapter = new TaskItemsAdapter(taskList);
+        mAdapter = new TaskItemsAdapter(this, taskList);
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -49,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText et = findViewById(R.id.etAddItem);
-                String text = String.valueOf(et.getText());
 
+                String text = String.valueOf(et.getText());
                 Date currentDate = Calendar.getInstance(TimeZone.getTimeZone("EST")).getTime();
+
                 addNewTaskItem(text, currentDate);
             }
         });
@@ -59,14 +64,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNewTaskItem(String taskName, Date date) {
 
-        TaskItem ti = new TaskItem();
-        ti.setTaskItem(taskName);
-        ti.setDateAdded(date);
-        taskList.add(ti);
-        mAdapter.notifyDataSetChanged();
-
         SqlHelper helper = new SqlHelper(this);
         helper.insertNewTaskItem(taskName, date);
+
+        taskList.clear();
+
+        retrieveTaskItems();
+        mAdapter.notifyDataSetChanged();
 
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
     }

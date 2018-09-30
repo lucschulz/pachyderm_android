@@ -1,5 +1,6 @@
 package ca.lucschulz.pachyderm;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,12 @@ import java.util.List;
 public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.TaskItemHolder> {
 
     private List<TaskItem> taskList;
-    private int position;
+    private Context context;
     public TaskItemHolder holder;
 
-    public TaskItemsAdapter(List<TaskItem> taskList) {
+
+    public TaskItemsAdapter(Context context, List<TaskItem> taskList) {
+        this.context = context;
         this.taskList = taskList;
     }
 
@@ -34,7 +37,6 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
 
-        this.position = position;
         this.holder = holder;
 
         holder.taskId.setText(taskList.get(position).getTaskId());
@@ -46,7 +48,16 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
         String taskId = taskList.get(position).getTaskId();
 
-        holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId)));
+        if (taskId == null)
+        {
+            SqlHelper sqlHelper = new SqlHelper(context);
+            String id = sqlHelper.getMostRecentId();
+            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(id)));
+        }
+        else
+        {
+            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId)));
+        }
     }
 
     class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener

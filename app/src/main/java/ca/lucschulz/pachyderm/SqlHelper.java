@@ -114,4 +114,19 @@ public class SqlHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TASK_ITEMS, null, null);
     }
+
+    public String getMostRecentId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Max(ID) as id FROM " + TABLE_TASK_ITEMS, null);
+
+        String id = null;
+
+        if (cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+                id = cursor.getString(cursor.getColumnIndex(KEY_ID));
+            }
+        }
+
+        return id;
+    }
 }
