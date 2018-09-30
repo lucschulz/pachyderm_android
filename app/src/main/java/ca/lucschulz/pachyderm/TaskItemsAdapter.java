@@ -38,7 +38,12 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("Testing", "Click listener works.");
+                if (isChecked) {
+                    Log.d("Testing", "Checked.");
+                }
+                else{
+                    Log.d("Testing", "Unchecked.");
+                }
             }
         });
     }
