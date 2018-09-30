@@ -1,6 +1,7 @@
 package ca.lucschulz.pachyderm;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,11 +53,11 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         {
             SqlHelper sqlHelper = new SqlHelper(context);
             String id = sqlHelper.getMostRecentId();
-            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(id)));
+            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(id), holder));
         }
         else
         {
-            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId)));
+            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId), holder));
         }
     }
 
@@ -64,19 +65,23 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
     {
         private int taskId;
 
-        public myCheckBoxChangeClicker(int taskId) {
+        public myCheckBoxChangeClicker(int taskId, TaskItemHolder holder) {
             this.taskId = taskId;
         }
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                Log.d("Testing", "Checked.");
                 //TODO Perform query that marks the app completed.
+
+                Log.d("Testing", "Checked.");
+                holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
 
             } else {
-                Log.d("Testing", "Unchecked.");
                 //TODO Perform query that marks the app not completed.
+
+                Log.d("Testing", "Unchecked.");
+                holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
         }
     }
