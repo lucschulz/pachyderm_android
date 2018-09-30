@@ -2,6 +2,9 @@
     <string name="app_name">Pachyderm</string>
     <string name="todo">Todo</string>
     <string name="add_item">Add Item</string>
-    <string name="name">Name</string>
+    <string name="name">Enter text here</string>
     <string name="enter_text_here">Enter text here</string>
+    <string name="cleartasks">Clear Tasks</string>
+    <string name="enter_task_string_enter_text_here">Enter text here</string>
+    <string name="clear_items">Clear Items</string>
 </resources>
