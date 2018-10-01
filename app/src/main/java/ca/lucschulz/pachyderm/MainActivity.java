@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
                 addNewTaskItem(text, currentDate);
             }
-        });
+        }); 
     }
 
     private void SetClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
