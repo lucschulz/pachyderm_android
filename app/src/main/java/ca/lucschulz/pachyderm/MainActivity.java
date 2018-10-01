@@ -1,11 +1,13 @@
 package ca.lucschulz.pachyderm;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +22,7 @@ import java.util.TimeZone;
 public class MainActivity extends AppCompatActivity {
 
     private List<TaskItem> taskList = new ArrayList<>();
-    private TaskItemsAdapter mAdapter;
+    private TaskItemsAdapter tAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +33,26 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
 
-        mAdapter = new TaskItemsAdapter(this, taskList);
+        tAdapter = new TaskItemsAdapter(this, taskList);
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(tAdapter);
 
-//        SqlHelper helper = new SqlHelper(this);
-//        helper.clearTable();
-
-        SetAddItemClickListener();
+        ConfigureEventListeners();
         retrieveTaskItems();
+    }
+
+    private void ConfigureEventListeners() {
+        SetAddItemClickListener();
+        SetClearItemsClickListener(this, tAdapter);
     }
 
     private void SetAddItemClickListener() {
         Button btnAddItem = findViewById(R.id.btnAddItem);
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
+        btnAddItem.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -62,6 +66,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void SetClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
+        Button btnClearIteams = findViewById(R.id.btnClearItems);
+        btnClearIteams.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SqlHelper helper = new SqlHelper(context);
+                helper.clearTable();
+
+                taskList.clear();
+                adapter.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Task list cleared.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void addNewTaskItem(String taskName, Date date) {
 
         SqlHelper helper = new SqlHelper(this);
@@ -70,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         taskList.clear();
 
         retrieveTaskItems();
-        mAdapter.notifyDataSetChanged();
+        tAdapter.notifyDataSetChanged();
 
         Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
     }
@@ -97,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         ti.setCompleted(completed);
 
         taskList.add(ti);
-        mAdapter.notifyDataSetChanged();
+        tAdapter.notifyDataSetChanged();
 
         Toast.makeText(getApplicationContext(), "List populated.", Toast.LENGTH_SHORT).show();
     }
