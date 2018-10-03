@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SetClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
-        Button btnClearIteams = findViewById(R.id.btnClearItems);
-        btnClearIteams.setOnClickListener(new OnClickListener() {
+        Button btnClearItems = findViewById(R.id.btnClearItems);
+        btnClearItems.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 SqlHelper helper = new SqlHelper(context);
@@ -118,7 +118,5 @@ public class MainActivity extends AppCompatActivity {
 
         taskList.add(ti);
         tAdapter.notifyDataSetChanged();
-
-        Toast.makeText(getApplicationContext(), "List populated.", Toast.LENGTH_SHORT).show();
     }
 }

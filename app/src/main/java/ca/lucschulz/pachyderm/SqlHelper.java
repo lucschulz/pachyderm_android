@@ -69,7 +69,7 @@ public class SqlHelper extends SQLiteOpenHelper {
 
     List<TaskItem> retrieveItems() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED, null);
 
         List<TaskItem> taskItems = new ArrayList<>();
 
@@ -113,6 +113,14 @@ public class SqlHelper extends SQLiteOpenHelper {
     void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TASK_ITEMS, null, null);
+    }
+
+    public void UpdateTaskCompleted(int id, boolean isCompleted) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String strFilter = "id = " + id;
+        ContentValues args = new ContentValues();
+        args.put(KEY_COMPLETED, isCompleted);
+        db.update(TABLE_TASK_ITEMS, args, strFilter, null);
     }
 
     public String getMostRecentId() {

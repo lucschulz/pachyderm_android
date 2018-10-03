@@ -70,18 +70,22 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         }
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            SqlHelper sqlHelper = new SqlHelper(context);
+
             if (isChecked) {
                 //TODO Perform query that marks the app completed.
 
                 Log.d("Testing", "Checked.");
                 holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
+                sqlHelper.UpdateTaskCompleted(taskId, true);
 
             } else {
                 //TODO Perform query that marks the app not completed.
 
                 Log.d("Testing", "Unchecked.");
                 holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                sqlHelper.UpdateTaskCompleted(taskId, false);
             }
         }
     }
