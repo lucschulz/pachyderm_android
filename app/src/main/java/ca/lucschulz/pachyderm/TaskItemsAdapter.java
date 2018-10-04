@@ -45,7 +45,14 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
-        holder.completed.setChecked(taskList.get(position).getCompleted());
+
+
+        Boolean isCompleted = taskList.get(position).getCompleted();
+        holder.completed.setChecked(isCompleted);
+
+        if (isCompleted) {
+            holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
 
         String taskId = taskList.get(position).getTaskId();
 
@@ -89,6 +96,8 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
             }
         }
     }
+
+
 
     @Override
     public int getItemCount() {
