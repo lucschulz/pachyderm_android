@@ -6,49 +6,43 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import ca.lucschulz.pachyderm.sql.SqlCommands;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "db_items.db";
-    private static final int DATABASE_VERSION = 1;
-    private static final String TABLE_TASK_ITEMS = "task_items";
-    private static final String KEY_ID = "id";
-    private static final String KEY_TASK_NAME = "task_name";
-    private static final String KEY_DATE_ADDED = "date_added";
-    private static final String KEY_COMPLETED = "completed";
+    private SqlCommands cmds;
+
+    private String TABLE_TASK_ITEMS;
+    private String KEY_ID;
+    private String KEY_TASK_NAME;
+    private String KEY_DATE_ADDED;
+    private String KEY_COMPLETED;
 
     SqlHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, SqlCommands.getDatabaseName(), null, SqlCommands.getDatabaseVersion());
+
+        cmds = new SqlCommands();
+
+        TABLE_TASK_ITEMS = SqlCommands.getTableTaskItems();
+        KEY_ID = SqlCommands.getKeyId();
+        KEY_TASK_NAME = SqlCommands.getKeyTaskName();
+        KEY_DATE_ADDED = SqlCommands.getKeyDateAdded();
+        KEY_COMPLETED = SqlCommands.getKeyCompleted();
     }
 
     public void onCreate(SQLiteDatabase db) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CREATE TABLE ").append(TABLE_TASK_ITEMS).append("(")
-                .append(KEY_ID)
-                .append(" INTEGER PRIMARY KEY, ")
-                .append(KEY_TASK_NAME)
-                .append(" TEXT, ")
-                .append(KEY_DATE_ADDED)
-                .append(" DATE, ")
-                .append(KEY_COMPLETED)
-                .append(" BIT)");
-
-        String sqlQuery = sb.toString();
-
+        String sqlQuery = cmds.createTable();
         db.execSQL(sqlQuery);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_ITEMS);
-
+        db.execSQL(cmds.dropTable());
         onCreate(db);
     }
 
@@ -69,7 +63,7 @@ public class SqlHelper extends SQLiteOpenHelper {
 
     List<TaskItem> retrieveItems() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED, null);
+        Cursor cursor = db.rawQuery(cmds.retrieveItems(), null);
 
         List<TaskItem> taskItems = new ArrayList<>();
 
