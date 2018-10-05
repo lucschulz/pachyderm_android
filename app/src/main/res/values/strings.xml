@@ -7,4 +7,6 @@
     <string name="cleartasks">Clear Tasks</string>
     <string name="enter_task_string_enter_text_here">Enter text here</string>
     <string name="clear_items">Clear Items</string>
+    <string name="date_added">Date Added</string>
+    <string name="due_date">Due Date</string>
 </resources>
