@@ -34,12 +34,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/dateAdded"
-        android:layout_below="@id/taskItem"
-        android:layout_marginStart="32sp"
+    <LinearLayout
+        android:id="@+id/layout_dates"
         android:layout_width="match_parent"
-        android:textColor="@android:color/black"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskItem"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dateAdded"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="32sp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/dateDue"
+            android:layout_width="155dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32sp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
 </RelativeLayout>
