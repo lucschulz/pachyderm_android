@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import ca.lucschulz.pachyderm.sql.SqlHelper;
+
 public class MainActivity extends AppCompatActivity {
 
     private List<TaskItem> taskList = new ArrayList<>();

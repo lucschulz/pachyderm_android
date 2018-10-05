@@ -1,4 +1,4 @@
-package ca.lucschulz.pachyderm;
+package ca.lucschulz.pachyderm.sql;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ca.lucschulz.pachyderm.TaskItem;
+import ca.lucschulz.pachyderm.Utils;
 import ca.lucschulz.pachyderm.sql.SqlCommands;
 
 public class SqlHelper extends SQLiteOpenHelper {
@@ -24,7 +26,7 @@ public class SqlHelper extends SQLiteOpenHelper {
     private String KEY_DATE_ADDED;
     private String KEY_COMPLETED;
 
-    SqlHelper(Context context) {
+    public SqlHelper(Context context) {
         super(context, SqlCommands.getDatabaseName(), null, SqlCommands.getDatabaseVersion());
 
         cmds = new SqlCommands();
@@ -46,7 +48,7 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void insertNewTaskItem(String taskItem, Date dateAdded) {
+    public void insertNewTaskItem(String taskItem, Date dateAdded) {
         try
         {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -61,7 +63,7 @@ public class SqlHelper extends SQLiteOpenHelper {
         }
     }
 
-    List<TaskItem> retrieveItems() {
+    public List<TaskItem> retrieveItems() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(cmds.retrieveItems(), null);
 
@@ -104,7 +106,7 @@ public class SqlHelper extends SQLiteOpenHelper {
         return taskItems;
     }
 
-    void clearTable() {
+    public void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TASK_ITEMS, null, null);
     }

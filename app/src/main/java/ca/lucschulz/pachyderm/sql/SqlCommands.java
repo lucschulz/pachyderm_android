@@ -8,6 +8,7 @@ public class SqlCommands {
     private static final String KEY_ID = "id";
     private static final String KEY_TASK_NAME = "task_name";
     private static final String KEY_DATE_ADDED = "date_added";
+    private static final String KEY_DATE_DUE = "date_due";
     private static final String KEY_COMPLETED = "completed";
 
     public static String getKeyDateAdded() {
@@ -45,11 +46,13 @@ public class SqlCommands {
         sb.append("CREATE TABLE ").append(getTableTaskItems()).append("(")
                 .append(getKeyId())
                 .append(" INTEGER PRIMARY KEY, ")
-                .append(getKeyTaskName())
+                .append(KEY_TASK_NAME)
                 .append(" TEXT, ")
-                .append(getKeyDateAdded())
+                .append(KEY_DATE_ADDED)
                 .append(" DATE, ")
-                .append(getKeyCompleted())
+                .append(KEY_DATE_DUE)
+                .append(" DATE, ")
+                .append(KEY_COMPLETED)
                 .append(" BIT)");
 
         return sb.toString();
