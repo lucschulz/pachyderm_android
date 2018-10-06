@@ -7,12 +7,13 @@ public class TaskItem {
     private String taskId;
     private String taskItem;
     private Date dateAdded;
+    private Date timeAdded;
     private boolean completed;
 
     public TaskItem() {
     }
 
-    public TaskItem(String taskId, String taskItem, Date dateAdded, boolean completed) {
+    public TaskItem(String taskId, String taskItem, Date dateAdded, Date timeAdded, boolean completed) {
         this.taskId = taskId;
         this.taskItem = taskItem;
         this.dateAdded = dateAdded;
@@ -49,5 +50,13 @@ public class TaskItem {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public Date getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(Date timeAdded) {
+        this.timeAdded = timeAdded;
     }
 }

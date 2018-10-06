@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
+import ca.lucschulz.pachyderm.taskItems.TaskItemHolder;
 
-public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.TaskItemHolder> {
+public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
 
     private List<TaskItem> taskList;
     private Context context;
@@ -45,6 +45,8 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         holder.taskItem.setText(taskList.get(position).getTaskItem());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat tf = new SimpleDateFormat("HH:mm");
+
         if (taskList.get(position).getDateAdded() != null) {
             holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
         }
@@ -100,22 +102,5 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
     @Override
     public int getItemCount() {
         return taskList.size();
-    }
-
-
-    public class TaskItemHolder extends RecyclerView.ViewHolder {
-        public TextView taskId;
-        public TextView taskItem;
-        public TextView dateAdded;
-        public CheckBox completed;
-
-        public TaskItemHolder(View view) {
-            super(view);
-
-            taskId = view.findViewById(R.id.tvTaskId);
-            taskItem = view.findViewById(R.id.taskItem);
-            dateAdded = view.findViewById(R.id.dateAdded);
-            completed = view.findViewById(R.id.cbCompleted);
-        }
     }
 }

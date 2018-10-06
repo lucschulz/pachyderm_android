@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -82,7 +81,6 @@ public class SqlHelper extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
                 String date = cursor.getString(cursor.getColumnIndex(KEY_DATE_ADDED));
                 int comp = cursor.getInt(cursor.getColumnIndex(KEY_COMPLETED));
-
 
 
                 Boolean completed;
