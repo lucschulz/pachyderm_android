@@ -21,7 +21,7 @@ import ca.lucschulz.pachyderm.Utils;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
-    private SqlCommands cmds;
+    private SqlStrings cmds;
 
     private String TABLE_TASK_ITEMS;
     private String KEY_ID;
@@ -30,20 +30,24 @@ public class SqlHelper extends SQLiteOpenHelper {
     private String KEY_COMPLETED;
 
     public SqlHelper(Context context) {
-        super(context, SqlCommands.getDatabaseName(), null, SqlCommands.getDatabaseVersion());
+        super(context, SqlStrings.getDatabaseName(), null, SqlStrings.getDatabaseVersion());
 
-        cmds = new SqlCommands();
+        cmds = new SqlStrings();
 
-        TABLE_TASK_ITEMS = SqlCommands.getTableTaskItems();
-        KEY_ID = SqlCommands.getKeyId();
-        KEY_TASK_NAME = SqlCommands.getKeyTaskName();
-        KEY_DATE_ADDED = SqlCommands.getKeyDateAdded();
-        KEY_COMPLETED = SqlCommands.getKeyCompleted();
+        TABLE_TASK_ITEMS = SqlStrings.getTableTaskItems();
+        KEY_ID = SqlStrings.getKeyId();
+        KEY_TASK_NAME = SqlStrings.getKeyTaskName();
+        KEY_DATE_ADDED = SqlStrings.getKeyDateAdded();
+        KEY_COMPLETED = SqlStrings.getKeyCompleted();
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String sqlQuery = cmds.createTable();
-        db.execSQL(sqlQuery);
+        SqlTables sqlTables = new SqlTables();
+        String taskItems = sqlTables.createTaskItemsTable();
+        String settings = sqlTables.createSettingsTable();
+
+        db.execSQL(taskItems);
+        db.execSQL(settings);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

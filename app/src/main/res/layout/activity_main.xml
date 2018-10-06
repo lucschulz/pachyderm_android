@@ -31,10 +31,10 @@
             android:id="@+id/etAddItem"
             android:layout_width="351dp"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
-            android:hint="Enter text @string/enter_text_here"
+            android:hint="@string/enter_text_string_enter_text_here"
             android:inputType="textPersonName"
-            android:text="@string/name"
             app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
             app:layout_constraintStart_toStartOf="parent"
             tools:targetApi="o" />
@@ -59,6 +59,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/clear_items" />
+
+            <Button
+                android:id="@+id/btnDueDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/set_due_date" />
         </LinearLayout>
     </LinearLayout>
 
