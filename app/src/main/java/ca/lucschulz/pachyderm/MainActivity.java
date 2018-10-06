@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
     private Calendar dueDateCalendar = Calendar.getInstance();
+
     private EditText etDueDate;
+    private EditText etDueTime;
 
 
 
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         retrieveTaskItems();
 
         etDueDate = findViewById(R.id.etDueDate);
+        etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
     }
 
@@ -82,9 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDueDate() {
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         etDueDate.setText(sdf.format(dueDateCalendar.getTime()));
     }
 
