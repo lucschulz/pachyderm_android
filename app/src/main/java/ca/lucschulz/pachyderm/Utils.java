@@ -8,7 +8,7 @@ import java.util.Locale;
 public class Utils {
 
     public static String getDateTime(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         return dateFormat.format(date);
     }
 

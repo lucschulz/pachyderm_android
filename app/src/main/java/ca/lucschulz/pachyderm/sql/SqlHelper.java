@@ -8,13 +8,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.TaskItem;
 import ca.lucschulz.pachyderm.Utils;
-import ca.lucschulz.pachyderm.sql.SqlCommands;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
@@ -48,13 +52,16 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertNewTaskItem(String taskItem, Date dateAdded) {
+    public void insertNewTaskItem(String taskItem) {
         try
         {
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Canada/Eastern"));
+            String date = zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues insertValues = new ContentValues();
             insertValues.put(KEY_TASK_NAME, taskItem);
-            insertValues.put(KEY_DATE_ADDED, Utils.getDateTime(dateAdded));
+            insertValues.put(KEY_DATE_ADDED, date);
             db.insert(TABLE_TASK_ITEMS, null, insertValues);
         }
         catch (Exception e)

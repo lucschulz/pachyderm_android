@@ -45,7 +45,10 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemsAdapter.Task
         holder.taskItem.setText(taskList.get(position).getTaskItem());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
+        if (taskList.get(position).getDateAdded() != null) {
+            holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
+        }
+
 
 
         Boolean isCompleted = taskList.get(position).getCompleted();

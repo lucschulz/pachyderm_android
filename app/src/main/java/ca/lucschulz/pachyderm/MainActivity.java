@@ -1,8 +1,8 @@
 package ca.lucschulz.pachyderm;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+import java.time.LocalTime;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 
@@ -59,11 +60,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText et = findViewById(R.id.etAddItem);
-
                 String text = String.valueOf(et.getText());
-                Date currentDate = Calendar.getInstance(TimeZone.getTimeZone("EST")).getTime();
-
-                addNewTaskItem(text, currentDate);
+                addNewTaskItem(text);
             }
         });
     }
@@ -84,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addNewTaskItem(String taskName, Date date) {
+    private void addNewTaskItem(String taskName) {
 
         SqlHelper helper = new SqlHelper(this);
-        helper.insertNewTaskItem(taskName, date);
+        helper.insertNewTaskItem(taskName);
 
         taskList.clear();
 
