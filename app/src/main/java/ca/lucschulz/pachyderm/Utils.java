@@ -2,14 +2,20 @@ package ca.lucschulz.pachyderm;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class Utils {
 
-    public static String getDateTime(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        return dateFormat.format(date);
+    public static String getDateTime() {
+        ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Canada/Eastern"));
+        String date = zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return date;
     }
 
     public static Date convertStringToDate(String date) throws ParseException {

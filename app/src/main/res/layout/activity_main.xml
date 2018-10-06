@@ -36,15 +36,32 @@
 
             <EditText
                 android:id="@+id/etAddItem"
-                android:layout_width="351dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/enter_text_string_enter_text_here"
                 android:inputType="textPersonName"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/etDueDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:clickable="true"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="@string/due_date"
+                android:inputType="date"
+                android:longClickable="false"
+                android:textAlignment="textEnd"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
