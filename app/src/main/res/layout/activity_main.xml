@@ -27,21 +27,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
-            android:id="@+id/etAddItem"
-            android:layout_width="351dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/enter_text_string_enter_text_here"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:targetApi="o" />
+        <LinearLayout
+        android:id="@+id/layout_editText"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etAddItem"
+                android:layout_width="351dp"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/enter_text_string_enter_text_here"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:targetApi="o" />
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/layout_buttons"
             style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
             android:orientation="horizontal">
 
@@ -74,6 +83,7 @@
                 android:text="@string/set_due_date"
                 android:textColor="@color/ic_launcher_background" />
         </LinearLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
