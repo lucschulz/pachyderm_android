@@ -1,4 +1,4 @@
-package ca.lucschulz.pachyderm;
+package ca.lucschulz.pachyderm.taskItems;
 
 import java.util.Date;
 

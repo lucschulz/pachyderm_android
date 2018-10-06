@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Locale;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
+import ca.lucschulz.pachyderm.taskItems.TaskItem;
+import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ca.lucschulz.pachyderm.TaskItem;
+import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.Utils;
 
 public class SqlHelper extends SQLiteOpenHelper {
