@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
@@ -44,14 +45,15 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         holder.taskId.setText(taskList.get(position).getTaskId());
         holder.taskItem.setText(taskList.get(position).getTaskItem());
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat tf = new SimpleDateFormat("HH:mm");
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat time = new SimpleDateFormat("HH:mm");
 
-        if (taskList.get(position).getDateAdded() != null) {
-            holder.dateAdded.setText(df.format(taskList.get(position).getDateAdded()));
+        Date dt = taskList.get(position).getDateAdded();
+
+        if (dt != null) {
+            holder.dateAdded.setText(date.format(dt));
+            holder.timeAdded.setText(time.format(dt));
         }
-
-
 
         Boolean isCompleted = taskList.get(position).getCompleted();
         holder.completed.setChecked(isCompleted);
