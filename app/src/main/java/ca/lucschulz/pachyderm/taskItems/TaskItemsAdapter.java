@@ -16,8 +16,6 @@ import java.util.List;
 
 import ca.lucschulz.pachyderm.R;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
-import ca.lucschulz.pachyderm.taskItems.TaskItem;
-import ca.lucschulz.pachyderm.taskItems.TaskItemHolder;
 
 public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
 

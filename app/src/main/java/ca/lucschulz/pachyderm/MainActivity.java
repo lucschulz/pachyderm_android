@@ -1,6 +1,7 @@
 package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +18,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
@@ -31,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
-    private Calendar dueDateCalendar = Calendar.getInstance();
+    private TimeZone tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
+    private Calendar dueDateCalendar;
 
     private EditText etDueDate;
     private EditText etDueTime;
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
+
+        TimeZone.setDefault(tz);
+        dueDateCalendar = Calendar.getInstance(tz);
 
         tAdapter = new TaskItemsAdapter(this, taskList);
 
@@ -77,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 new DatePickerDialog(context, date, dueDateCalendar
                         .get(Calendar.YEAR), dueDateCalendar.get(Calendar.MONTH),
                         dueDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -85,9 +91,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+//    private void configureDueTime(Context context) {
+//        int hour = dueDateCalendar.get(Calendar.HOUR_OF_DAY);
+//        int minute dueDateCalendar.get(Calendar.MINUTE);
+//        TimePickerDialog timePicker = new TimePickerDialog(AddReminder)
+//    }
+
     private void updateDueDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        etDueDate.setText(sdf.format(dueDateCalendar.getTime()));
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        etDueDate.setText(date.format(dueDateCalendar.getTime()));
+
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+        etDueTime.setText(time.format(dueDateCalendar.getTime()));
     }
 
     private void configureEventListeners() {
