@@ -34,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
+
+
     private TimeZone tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
     private Calendar dueDateCalendar;
-
     private EditText etDueDate;
     private EditText etDueTime;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
+        configureDueTime(this);
     }
 
     private void configureDueDateCalendar(final Context context) {
@@ -84,18 +84,28 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(context, date, dueDateCalendar
-                        .get(Calendar.YEAR), dueDateCalendar.get(Calendar.MONTH),
-                        dueDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(context, date, dueDateCalendar.get(Calendar.YEAR), dueDateCalendar.get(Calendar.MONTH), dueDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
     }
 
-//    private void configureDueTime(Context context) {
-//        int hour = dueDateCalendar.get(Calendar.HOUR_OF_DAY);
-//        int minute dueDateCalendar.get(Calendar.MINUTE);
-//        TimePickerDialog timePicker = new TimePickerDialog(AddReminder)
-//    }
+    private void configureDueTime(final Context context) {
+        final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                dueDateCalendar.set(Calendar.HOUR, hourOfDay);
+                dueDateCalendar.set(Calendar.MINUTE, minute);
+                updateDueDate();
+            }
+        };
+
+        etDueTime.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(context, time, dueDateCalendar.get(Calendar.HOUR), dueDateCalendar.get(Calendar.MINUTE), true).show();
+            }
+        });
+    }
 
     private void updateDueDate() {
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -117,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText et = findViewById(R.id.etAddItem);
-                String text = String.valueOf(et.getText());
-                addNewTaskItem(text);
+                addNewTaskItem(et);
             }
         });
     }
@@ -139,17 +148,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addNewTaskItem(String taskName) {
+    private void addNewTaskItem(EditText et) {
+        String taskName = String.valueOf(et.getText());
 
-        SqlHelper helper = new SqlHelper(this);
-        helper.insertNewTaskItem(taskName);
+        if (taskName.length() > 0) {
+            SqlHelper helper = new SqlHelper(this);
+            helper.insertNewTaskItem(taskName);
 
-        taskList.clear();
+            taskList.clear();
 
-        retrieveTaskItems();
-        tAdapter.notifyDataSetChanged();
+            retrieveTaskItems();
+            tAdapter.notifyDataSetChanged();
 
-        Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
+
+            clearTaskDescription();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please enter a task description.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void clearTaskDescription() {
+        EditText et = findViewById(R.id.etAddItem);
+        et.setText(null);
     }
 
     private void retrieveTaskItems() {
