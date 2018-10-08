@@ -2,7 +2,9 @@ package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskItemsAdapter tAdapter;
 
 
-    private TimeZone tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
+    private TimeZone tz;
     private Calendar dueDateCalendar;
     private EditText etDueDate;
     private EditText etDueTime;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
 
+        tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
         TimeZone.setDefault(tz);
         dueDateCalendar = Calendar.getInstance(tz);
 
@@ -75,6 +79,28 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                showAboutInfo();
+                break;
+
+            case R.id.action_settings:
+                // Settings menu
+                break;
+
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void showAboutInfo() {
+        Intent aboutScreen = new Intent(this, AboutActivity.class);
+        startActivity(aboutScreen);
     }
 
     private void configureDueDateCalendar(final Context context) {
