@@ -21,7 +21,6 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
 
     private List<TaskItem> taskList;
     private Context context;
-    public TaskItemHolder holder;
 
 
     public TaskItemsAdapter(Context context, List<TaskItem> taskList) {
@@ -39,8 +38,6 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
 
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
-
-        this.holder = holder;
 
         holder.taskId.setText(taskList.get(position).getTaskId());
         holder.taskItem.setText(taskList.get(position).getTaskItem());
@@ -68,34 +65,11 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         {
             SqlHelper sqlHelper = new SqlHelper(context);
             String id = sqlHelper.getMostRecentId();
-            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(id), holder));
+            holder.completed.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(id), holder, context));
         }
         else
         {
-            holder.completed.setOnCheckedChangeListener(new myCheckBoxChangeClicker(Integer.parseInt(taskId), holder));
-        }
-    }
-
-    class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener
-    {
-        private int taskId;
-
-        public myCheckBoxChangeClicker(int taskId, TaskItemHolder holder) {
-            this.taskId = taskId;
-        }
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            SqlHelper sqlHelper = new SqlHelper(context);
-
-            if (isChecked) {
-                holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                sqlHelper.UpdateTaskCompleted(taskId, true);
-
-            } else {
-                holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                sqlHelper.UpdateTaskCompleted(taskId, false);
-            }
+            holder.completed.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
         }
     }
 
