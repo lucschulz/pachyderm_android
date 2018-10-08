@@ -58,7 +58,7 @@ public class SqlHelper extends SQLiteOpenHelper {
     public void insertNewTaskItem(String taskItem) {
         try
         {
-            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Canada/Eastern"));
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
             String date = zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             SQLiteDatabase db = this.getWritableDatabase();

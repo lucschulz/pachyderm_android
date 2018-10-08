@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
 
-        tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
+//        tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
+        tz = TimeZone.getDefault();
         TimeZone.setDefault(tz);
         dueDateCalendar = Calendar.getInstance(tz);
 
