@@ -6,7 +6,6 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     android:clickable="true"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
@@ -80,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32sp"
                 android:layout_weight="1"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/dateDue"
@@ -88,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32sp"
                 android:layout_weight="1"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32sp"
                 android:layout_weight="1"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/timeDue"
@@ -111,7 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32sp"
                 android:layout_weight="1"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -9,6 +9,6 @@
     <string name="date_added">Date Added</string>
     <string name="due_date">Due Date</string>
     <string name="due_time">Due Time</string>
-    <string name="set_due_date">Due Date</string>
+    <string name="set_due_date">Set Due Date</string>
     <string name="enter_text_string_enter_text_here">Task description</string>
 </resources>
