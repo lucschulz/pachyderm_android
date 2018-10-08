@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,8 +37,8 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
 
-        holder.taskId.setText(taskList.get(position).getTaskId());
-        holder.taskItem.setText(taskList.get(position).getTaskItem());
+        holder.itmTaskID.setText(taskList.get(position).getTaskId());
+        holder.itmTaskDescription.setText(taskList.get(position).getTaskDescription());
 
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat time = new SimpleDateFormat("HH:mm");
@@ -48,15 +46,15 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         Date dt = taskList.get(position).getDateAdded();
 
         if (dt != null) {
-            holder.dateAdded.setText(date.format(dt));
-            holder.timeAdded.setText(time.format(dt));
+            holder.itmDateAdded.setText(date.format(dt));
+            holder.itmTimeAdded.setText(time.format(dt));
         }
 
         Boolean isCompleted = taskList.get(position).getCompleted();
-        holder.completed.setChecked(isCompleted);
+        holder.itmCheckBox.setChecked(isCompleted);
 
         if (isCompleted) {
-            holder.taskItem.setPaintFlags(holder.taskItem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         String taskId = taskList.get(position).getTaskId();
@@ -65,11 +63,11 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         {
             SqlHelper sqlHelper = new SqlHelper(context);
             String id = sqlHelper.getMostRecentId();
-            holder.completed.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(id), holder, context));
+            holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(id), holder, context));
         }
         else
         {
-            holder.completed.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
+            holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
         }
     }
 

@@ -2,7 +2,6 @@ package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +21,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +29,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
+import ca.lucschulz.pachyderm.taskItems.AddTask;
+import ca.lucschulz.pachyderm.taskItems.RetrieveTasks;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
 
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
-
 
     private TimeZone tz;
     private Calendar dueDateCalendar;
@@ -53,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        configureCalendar();
+
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
-
-        tz = TimeZone.getDefault();
-        TimeZone.setDefault(tz);
-        dueDateCalendar = Calendar.getInstance(tz);
-
         tAdapter = new TaskItemsAdapter(this, taskList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -67,12 +62,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(tAdapter);
 
         configureEventListeners();
-        retrieveTaskItems(this);
+
+        RetrieveTasks retrieve = new RetrieveTasks();
+        retrieve.retrieveTaskItems(this, taskList, tAdapter);
 
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
+    }
+
+    private void configureCalendar() {
+        tz = TimeZone.getDefault();
+        TimeZone.setDefault(tz);
+        dueDateCalendar = Calendar.getInstance(tz);
     }
 
     @Override
@@ -99,15 +102,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void showAboutInfo() {
-        Intent aboutScreen = new Intent(this, AboutActivity.class);
-        startActivity(aboutScreen);
-    }
-
-    private void showSettings() {
-        Intent settingsScreen = new Intent(this, Settings.class);
-        startActivity(settingsScreen);
-    }
 
     private void configureDueDateCalendar(final Context context) {
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -167,44 +161,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText taskDescription = findViewById(R.id.etAddItem);
-                EditText dueDate = findViewById(R.id.etDueDate);
-                EditText dueTime = findViewById(R.id.etDueTime);
 
-                try {
-                    addNewTaskItem(taskDescription, dueDate, dueTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                AddTask addTask = new AddTask(getApplicationContext());
+                addTask.addNewTask(taskDescription, taskList, tAdapter);
+
+                clearTaskDescription();
             }
         });
     }
 
-    private void addNewTaskItem(EditText taskDescription, EditText dueDate, EditText dueTime) throws ParseException {
-        String taskName = String.valueOf(taskDescription.getText());
-
-        String dueDateString = String.valueOf(dueDate.getText());
-        String dueTimeString = String.valueOf(dueTime.getText());
-
-        Date dtDueDate = Utils.convertStringToDate(dueDateString, dueTimeString);
-        Toast.makeText(getApplicationContext(), dtDueDate.toString(), Toast.LENGTH_SHORT).show();
-
-
-        if (taskName.length() > 0) {
-            SqlHelper helper = new SqlHelper(this);
-            helper.insertNewTaskItem(taskName);
-
-            taskList.clear();
-
-            retrieveTaskItems(this);
-            tAdapter.notifyDataSetChanged();
-
-            Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
-
-            clearTaskDescription();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Please enter a task description.", Toast.LENGTH_SHORT).show();
-        }
+    private void clearTaskDescription() {
+        EditText et = findViewById(R.id.etAddItem);
+        et.setText(null);
     }
 
     private void setClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
@@ -223,29 +191,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void clearTaskDescription() {
-        EditText et = findViewById(R.id.etAddItem);
-        et.setText(null);
+
+    private void showAboutInfo() {
+        Intent aboutScreen = new Intent(this, AboutActivity.class);
+        startActivity(aboutScreen);
     }
 
-    private void retrieveTaskItems(Context context) {
-        SqlHelper helper = new SqlHelper(context);
-        List<TaskItem> list = helper.retrieveItems();
-
-        for (TaskItem ti : list) {
-            String taskId = ti.getTaskId();
-            String name = ti.getTaskItem();
-            Date date = ti.getDateAdded();
-            Boolean completed = ti.getCompleted();
-
-            TaskItem taskItem = new TaskItem();
-            taskItem.setTaskId(taskId);
-            taskItem.setTaskItem(name);
-            taskItem.setDateAdded(date);
-            taskItem.setCompleted(completed);
-
-            taskList.add(taskItem);
-            tAdapter.notifyDataSetChanged();
-        }
+    private void showSettings() {
+        Intent settingsScreen = new Intent(this, Settings.class);
+        startActivity(settingsScreen);
     }
 }

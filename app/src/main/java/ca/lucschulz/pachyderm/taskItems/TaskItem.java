@@ -1,5 +1,6 @@
 package ca.lucschulz.pachyderm.taskItems;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TaskItem {
@@ -7,16 +8,19 @@ public class TaskItem {
     private String taskId;
     private String taskItem;
     private Date dateAdded;
-    private Date timeAdded;
+    private Date dateDue;
+    private Date timeDue;
     private boolean completed;
 
     public TaskItem() {
     }
 
-    public TaskItem(String taskId, String taskItem, Date dateAdded, Date timeAdded, boolean completed) {
+    public TaskItem(String taskId, String taskItem, Date dateAdded, boolean completed) {
         this.taskId = taskId;
         this.taskItem = taskItem;
         this.dateAdded = dateAdded;
+        this.setDateDue(dateDue);
+        this.setTimeDue(timeDue);
         this.completed = completed;
     }
 
@@ -28,7 +32,7 @@ public class TaskItem {
         this.taskId = taskId;
     }
 
-    public String getTaskItem() {
+    public String getTaskDescription() {
         return taskItem;
     }
 
@@ -52,11 +56,24 @@ public class TaskItem {
         this.completed = completed;
     }
 
-    public Date getTimeAdded() {
-        return timeAdded;
+    public String getTimeAdded() {
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+        return time.format(dateAdded);
     }
 
-    public void setTimeAdded(Date timeAdded) {
-        this.timeAdded = timeAdded;
+    public Date getDateDue() {
+        return dateDue;
+    }
+
+    public void setDateDue(Date dateDue) {
+        this.dateDue = dateDue;
+    }
+
+    public Date getTimeDue() {
+        return timeDue;
+    }
+
+    public void setTimeDue(Date timeDue) {
+        this.timeDue = timeDue;
     }
 }

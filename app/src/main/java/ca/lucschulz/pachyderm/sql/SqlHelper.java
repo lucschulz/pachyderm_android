@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +28,7 @@ public class SqlHelper extends SQLiteOpenHelper {
     private String KEY_ID;
     private String KEY_TASK_NAME;
     private String KEY_DATE_ADDED;
+    private String KEY_DATE_DUE;
     private String KEY_COMPLETED;
 
     public SqlHelper(Context context) {
@@ -38,6 +40,7 @@ public class SqlHelper extends SQLiteOpenHelper {
         KEY_ID = SqlStrings.getKeyId();
         KEY_TASK_NAME = SqlStrings.getKeyTaskName();
         KEY_DATE_ADDED = SqlStrings.getKeyDateAdded();
+        KEY_DATE_DUE = SqlStrings.getKeyDateDue();
         KEY_COMPLETED = SqlStrings.getKeyCompleted();
     }
 
@@ -65,6 +68,7 @@ public class SqlHelper extends SQLiteOpenHelper {
             ContentValues insertValues = new ContentValues();
             insertValues.put(KEY_TASK_NAME, taskItem);
             insertValues.put(KEY_DATE_ADDED, date);
+            insertValues.put(KEY_DATE_DUE, date);
             db.insert(TABLE_TASK_ITEMS, null, insertValues);
         }
         catch (Exception e)

@@ -8,19 +8,23 @@ import android.widget.TextView;
 import ca.lucschulz.pachyderm.R;
 
 public class TaskItemHolder extends RecyclerView.ViewHolder {
-    public TextView taskId;
-    public TextView taskItem;
-    public TextView dateAdded;
-    public TextView timeAdded;
-    public CheckBox completed;
+    public TextView itmTaskID;
+    public TextView itmTaskDescription;
+    public TextView itmDateAdded;
+    public TextView itmTimeAdded;
+    public TextView itmDateDue;
+    public TextView itmTimeDue;
+    public CheckBox itmCheckBox;
 
     public TaskItemHolder(View view) {
         super(view);
 
-        taskId = view.findViewById(R.id.tvTaskId);
-        taskItem = view.findViewById(R.id.taskItem);
-        dateAdded = view.findViewById(R.id.dateAdded);
-        timeAdded = view.findViewById(R.id.timeAdded);
-        completed = view.findViewById(R.id.cbCompleted);
+        itmTaskID = view.findViewById(R.id.tvTaskId);
+        itmTaskDescription = view.findViewById(R.id.taskItem);
+        itmDateAdded = view.findViewById(R.id.item_dateAdded);
+        itmTimeAdded = view.findViewById(R.id.item_timeAdded);
+        itmDateDue = view.findViewById(R.id.item_dateDue);
+        itmTimeDue = view.findViewById(R.id.item_timeDue);
+        itmCheckBox = view.findViewById(R.id.cbCompleted);
     }
 }
