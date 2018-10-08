@@ -94,32 +94,46 @@
 
             <Button
                 android:id="@+id/btnAddItem"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
+                style="@android:style/Widget.DeviceDefault.Button"
+                android:layout_width="10sp"
                 android:layout_height="36sp"
+                android:layout_margin="5sp"
                 android:layout_weight="0.3"
+                android:background="@android:color/holo_red_dark"
+                android:elevation="10dp"
                 android:text="@string/add_item"
+                android:textAlignment="center"
                 android:textColor="@color/ic_launcher_background"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etAddItem" />
 
             <Button
                 android:id="@+id/btnDueDate"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="10sp"
                 android:layout_height="36sp"
+                android:layout_margin="5sp"
                 android:layout_weight="0.4"
+                android:background="?android:attr/textColorLink"
                 android:text="@string/set_due_date"
-                android:textColor="@color/ic_launcher_background" />
+                android:textAlignment="center"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/btnClearItems"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="36sp"
+                android:layout_margin="5sp"
                 android:layout_weight="0.3"
+                android:background="@android:color/holo_purple"
+                android:elevation="0dp"
                 android:text="@string/clear_items"
-                android:textColor="@color/ic_launcher_background" />
+                android:textAlignment="center"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="12sp"
+                android:layout_width="10sp" />
         </LinearLayout>
 
     </LinearLayout>

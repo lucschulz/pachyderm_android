@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
 
-//        tz = TimeZone.getTimeZone(ZoneId.of("Canada/Eastern"));
         tz = TimeZone.getDefault();
         TimeZone.setDefault(tz);
         dueDateCalendar = Calendar.getInstance(tz);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(tAdapter);
 
         configureEventListeners();
-        retrieveTaskItems();
+        retrieveTaskItems(this);
 
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_settings:
-                // Settings menu
+                showSettings();
                 break;
 
             default:
@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
     private void showAboutInfo() {
         Intent aboutScreen = new Intent(this, AboutActivity.class);
         startActivity(aboutScreen);
+    }
+
+    private void showSettings() {
+        Intent settingsScreen = new Intent(this, Settings.class);
+        startActivity(settingsScreen);
     }
 
     private void configureDueDateCalendar(final Context context) {
@@ -161,10 +166,45 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                EditText et = findViewById(R.id.etAddItem);
-                addNewTaskItem(et);
+                EditText taskDescription = findViewById(R.id.etAddItem);
+                EditText dueDate = findViewById(R.id.etDueDate);
+                EditText dueTime = findViewById(R.id.etDueTime);
+
+                try {
+                    addNewTaskItem(taskDescription, dueDate, dueTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    private void addNewTaskItem(EditText taskDescription, EditText dueDate, EditText dueTime) throws ParseException {
+        String taskName = String.valueOf(taskDescription.getText());
+
+        String dueDateString = String.valueOf(dueDate.getText());
+        String dueTimeString = String.valueOf(dueTime.getText());
+
+        Date dtDueDate = Utils.convertStringToDate(dueDateString, dueTimeString);
+        Toast.makeText(getApplicationContext(), dtDueDate.toString(), Toast.LENGTH_SHORT).show();
+
+
+        if (taskName.length() > 0) {
+            SqlHelper helper = new SqlHelper(this);
+            helper.insertNewTaskItem(taskName);
+
+            taskList.clear();
+
+            retrieveTaskItems(this);
+            tAdapter.notifyDataSetChanged();
+
+            Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
+
+            clearTaskDescription();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please enter a task description.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
@@ -183,34 +223,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addNewTaskItem(EditText et) {
-        String taskName = String.valueOf(et.getText());
-
-        if (taskName.length() > 0) {
-            SqlHelper helper = new SqlHelper(this);
-            helper.insertNewTaskItem(taskName);
-
-            taskList.clear();
-
-            retrieveTaskItems();
-            tAdapter.notifyDataSetChanged();
-
-            Toast.makeText(getApplicationContext(), "Item added.", Toast.LENGTH_SHORT).show();
-
-            clearTaskDescription();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Please enter a task description.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void clearTaskDescription() {
         EditText et = findViewById(R.id.etAddItem);
         et.setText(null);
     }
 
-    private void retrieveTaskItems() {
-        SqlHelper helper = new SqlHelper(this);
+    private void retrieveTaskItems(Context context) {
+        SqlHelper helper = new SqlHelper(context);
         List<TaskItem> list = helper.retrieveItems();
 
         for (TaskItem ti : list) {
@@ -219,18 +238,14 @@ public class MainActivity extends AppCompatActivity {
             Date date = ti.getDateAdded();
             Boolean completed = ti.getCompleted();
 
-            populateList(taskId, name, date, completed);
+            TaskItem taskItem = new TaskItem();
+            taskItem.setTaskId(taskId);
+            taskItem.setTaskItem(name);
+            taskItem.setDateAdded(date);
+            taskItem.setCompleted(completed);
+
+            taskList.add(taskItem);
+            tAdapter.notifyDataSetChanged();
         }
-    }
-
-    private void populateList(String taskId, String taskName, Date date, Boolean completed) {
-        TaskItem ti = new TaskItem();
-        ti.setTaskId(taskId);
-        ti.setTaskItem(taskName);
-        ti.setDateAdded(date);
-        ti.setCompleted(completed);
-
-        taskList.add(ti);
-        tAdapter.notifyDataSetChanged();
     }
 }

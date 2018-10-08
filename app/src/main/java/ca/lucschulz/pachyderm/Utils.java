@@ -23,4 +23,10 @@ public class Utils {
         Date dt = sdf.parse(date);
         return dt;
     }
+
+    public static Date convertStringToDate(String date, String time) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dt = sdf.parse(date + time);
+        return dt;
+    }
 }
