@@ -36,7 +36,7 @@ public class SqlStrings {
         return KEY_ID;
     }
 
-    public static String getKeyTaskName() {
+    public static String getKeyTaskDescription() {
         return KEY_TASK_NAME;
     }
 

@@ -8,40 +8,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.Utils;
+import ca.lucschulz.pachyderm.taskItems.TaskItem;
 
 public class SqlHelper extends SQLiteOpenHelper {
 
     private SqlStrings cmds;
 
-    private String TABLE_TASK_ITEMS;
-    private String KEY_ID;
-    private String KEY_TASK_NAME;
-    private String KEY_DATE_ADDED;
-    private String KEY_DATE_DUE;
-    private String KEY_COMPLETED;
-
     public SqlHelper(Context context) {
         super(context, SqlStrings.getDatabaseName(), null, SqlStrings.getDatabaseVersion());
 
         cmds = new SqlStrings();
-
-        TABLE_TASK_ITEMS = SqlStrings.getTableTaskItems();
-        KEY_ID = SqlStrings.getKeyId();
-        KEY_TASK_NAME = SqlStrings.getKeyTaskName();
-        KEY_DATE_ADDED = SqlStrings.getKeyDateAdded();
-        KEY_DATE_DUE = SqlStrings.getKeyDateDue();
-        KEY_COMPLETED = SqlStrings.getKeyCompleted();
     }
 
     public void onCreate(SQLiteDatabase db) {
@@ -58,18 +39,21 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertNewTaskItem(String taskItem) {
+    public void insertNewTaskItem(TaskItem taskItem) {
         try
         {
-            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-            String date = zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String taskDescription = taskItem.getTaskDescription();
+            Date dateAdded = taskItem.getDateAdded();
+            Date dateDue = taskItem.getDateDue();
 
             SQLiteDatabase db = this.getWritableDatabase();
+
             ContentValues insertValues = new ContentValues();
-            insertValues.put(KEY_TASK_NAME, taskItem);
-            insertValues.put(KEY_DATE_ADDED, date);
-            insertValues.put(KEY_DATE_DUE, date);
-            db.insert(TABLE_TASK_ITEMS, null, insertValues);
+            insertValues.put(SqlStrings.getKeyTaskDescription(), taskDescription);
+            insertValues.put(SqlStrings.getKeyDateAdded(), String.valueOf(dateAdded));
+            insertValues.put(SqlStrings.getKeyDateDue(), String.valueOf(dateDue));
+
+            db.insert(SqlStrings.getTableTaskItems(), null, insertValues);
         }
         catch (Exception e)
         {
@@ -85,10 +69,10 @@ public class SqlHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             while(!cursor.isAfterLast()) {
-                String id = cursor.getString(cursor.getColumnIndex(KEY_ID));
-                String name = cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME));
-                String date = cursor.getString(cursor.getColumnIndex(KEY_DATE_ADDED));
-                int comp = cursor.getInt(cursor.getColumnIndex(KEY_COMPLETED));
+                String id = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyId()));
+                String name = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyTaskDescription()));
+                String date = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateAdded()));
+                int comp = cursor.getInt(cursor.getColumnIndex(SqlStrings.getKeyCompleted()));
 
 
                 Boolean completed;
@@ -106,7 +90,7 @@ public class SqlHelper extends SQLiteOpenHelper {
 
                 TaskItem ti = new TaskItem();
                 ti.setTaskId(id);
-                ti.setTaskItem(name);
+                ti.setTaskDescription(name);
                 ti.setDateAdded(dt);
                 ti.setCompleted(completed);
 
@@ -121,26 +105,26 @@ public class SqlHelper extends SQLiteOpenHelper {
 
     public void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TASK_ITEMS, null, null);
+        db.delete(SqlStrings.getTableTaskItems(), null, null);
     }
 
     public void UpdateTaskCompleted(int id, boolean isCompleted) {
         SQLiteDatabase db = this.getWritableDatabase();
         String strFilter = "id = " + id;
         ContentValues args = new ContentValues();
-        args.put(KEY_COMPLETED, isCompleted);
-        db.update(TABLE_TASK_ITEMS, args, strFilter, null);
+        args.put(SqlStrings.getKeyCompleted(), isCompleted);
+        db.update(SqlStrings.getTableTaskItems(), args, strFilter, null);
     }
 
     public String getMostRecentId() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT Max(ID) as id FROM " + TABLE_TASK_ITEMS, null);
+        Cursor cursor = db.rawQuery("SELECT Max(ID) as id FROM " + SqlStrings.getTableTaskItems(), null);
 
         String id = null;
 
         if (cursor.moveToFirst()) {
             while(!cursor.isAfterLast()) {
-                id = cursor.getString(cursor.getColumnIndex(KEY_ID));
+                id = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyId()));
             }
         }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
@@ -17,18 +18,19 @@ public class AddTask {
     }
 
 
-    public void addNewTask(EditText taskDescription, List<TaskItem> taskList, TaskItemsAdapter tAdapter) {
+    public void addNewTask(TaskItem taskItem, List<TaskItem> taskList, TaskItemsAdapter tAdapter) {
 
-        String taskName = String.valueOf(taskDescription.getText());
+        String taskDescription = taskItem.getTaskDescription();
 
-        if (taskName.length() > 0) {
+        if (taskDescription.length() > 0) {
+
             SqlHelper helper = new SqlHelper(context);
-            helper.insertNewTaskItem(taskName);
+            helper.insertNewTaskItem(taskItem);
 
             taskList.clear();
 
-            RetrieveTasks retrieve = new RetrieveTasks();
-            retrieve.retrieveTaskItems(context, taskList, tAdapter);
+            RetrieveTasks retrieve = new RetrieveTasks(context);
+            retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 
             Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show();

@@ -37,28 +37,38 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
     @Override
     public void onBindViewHolder(TaskItemHolder holder, int position) {
 
-        holder.itmTaskID.setText(taskList.get(position).getTaskId());
-        holder.itmTaskDescription.setText(taskList.get(position).getTaskDescription());
-
+        // Format the added and due dates.
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat time = new SimpleDateFormat("HH:mm");
 
-        Date dt = taskList.get(position).getDateAdded();
-
-        if (dt != null) {
-            holder.itmDateAdded.setText(date.format(dt));
-            holder.itmTimeAdded.setText(time.format(dt));
-        }
-
+        // Retrieve data elements from the query results.
+        Date dtAdded = taskList.get(position).getDateAdded();
+        Date dtDue = taskList.get(position).getDateDue();
         Boolean isCompleted = taskList.get(position).getCompleted();
+        String taskId = taskList.get(position).getTaskId();
+
+        holder.itmTaskID.setText(taskList.get(position).getTaskId());
+        holder.itmTaskDescription.setText(taskList.get(position).getTaskDescription());
         holder.itmCheckBox.setChecked(isCompleted);
 
+        // Check if there is an "added" date and populate.
+        if (dtAdded != null) {
+            holder.itmDateAdded.setText(date.format(dtAdded));
+            holder.itmTimeAdded.setText(time.format(dtAdded));
+        }
+
+        // Check if there is a "due" date and populate.
+        if (dtDue != null) {
+            holder.itmDateDue.setText(date.format(dtDue));
+            holder.itmTimeDue.setText(time.format(dtDue));
+        }
+
+        // Check if marked complete or not.
         if (isCompleted) {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        String taskId = taskList.get(position).getTaskId();
-
+        // If the entry is the last one created (as opposed to having been pulled from the DB), fetch ID and append to allow referencing.
         if (taskId == null)
         {
             SqlHelper sqlHelper = new SqlHelper(context);

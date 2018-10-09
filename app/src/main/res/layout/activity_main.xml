@@ -109,19 +109,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/etAddItem" />
 
             <Button
-                android:id="@+id/btnDueDate"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="10sp"
-                android:layout_height="36sp"
-                android:layout_margin="5sp"
-                android:layout_weight="0.4"
-                android:background="?android:attr/textColorLink"
-                android:text="@string/set_due_date"
-                android:textAlignment="center"
-                android:textColor="@color/ic_launcher_background"
-                android:textSize="12sp" />
-
-            <Button
                 android:id="@+id/btnClearItems"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_height="36sp"

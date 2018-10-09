@@ -21,10 +21,12 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -63,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         configureEventListeners();
 
-        RetrieveTasks retrieve = new RetrieveTasks();
-        retrieve.retrieveTaskItems(this, taskList, tAdapter);
+        RetrieveTasks retrieve = new RetrieveTasks(this);
+        retrieve.retrieveTaskItems(taskList, tAdapter);
 
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
@@ -161,9 +163,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText taskDescription = findViewById(R.id.etAddItem);
+                EditText dueDate = findViewById(R.id.etDueDate);
+                EditText dueTime = findViewById(R.id.etDueTime);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                Date dPart = null;
+                Date tPart = null;
+
+                try {
+                    dPart = sdf.parse(String.valueOf(dueDate.getText()));
+                    tPart = sdf.parse(String.valueOf(dueTime.getText()));
+                }
+                catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    Date date = sdf.parse(String.valueOf(dPart));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    e.printStackTrace();
+                }
+
+
+                TaskItem taskItem = new TaskItem();
+                taskItem.setTaskDescription(String.valueOf(taskDescription.getText()));
+                taskItem.setDateDue(dtResult);
+
 
                 AddTask addTask = new AddTask(getApplicationContext());
-                addTask.addNewTask(taskDescription, taskList, tAdapter);
+                addTask.addNewTask(taskItem, taskList, tAdapter);
 
                 clearTaskDescription();
             }

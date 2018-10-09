@@ -7,7 +7,7 @@ public class SqlTables extends SqlStrings {
         sb.append("CREATE TABLE ").append(getTableTaskItems()).append("(")
                 .append(getKeyId())
                 .append(" INTEGER PRIMARY KEY, ")
-                .append(getKeyTaskName())
+                .append(getKeyTaskDescription())
                 .append(" TEXT, ")
                 .append(getKeyDateAdded())
                 .append(" DATE, ")
