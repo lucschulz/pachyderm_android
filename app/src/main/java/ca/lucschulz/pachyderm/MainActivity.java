@@ -65,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
         configureEventListeners();
 
         RetrieveTasks retrieve = new RetrieveTasks(this);
-        retrieve.retrieveTaskItems(taskList, tAdapter);
+        try {
+            retrieve.retrieveTaskItems(taskList, tAdapter);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
@@ -183,7 +187,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                 AddTask addTask = new AddTask(getApplicationContext());
-                addTask.addNewTask(taskItem, taskList, tAdapter);
+                try {
+                    addTask.addNewTask(taskItem, taskList, tAdapter);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 clearTaskDescription();
             }

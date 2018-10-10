@@ -1,10 +1,9 @@
 package ca.lucschulz.pachyderm.taskItems;
 
 import android.content.Context;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
@@ -18,7 +17,7 @@ public class AddTask {
     }
 
 
-    public void addNewTask(TaskItem taskItem, List<TaskItem> taskList, TaskItemsAdapter tAdapter) {
+    public void addNewTask(TaskItem taskItem, List<TaskItem> taskList, TaskItemsAdapter tAdapter) throws ParseException {
 
         String taskDescription = taskItem.getTaskDescription();
 

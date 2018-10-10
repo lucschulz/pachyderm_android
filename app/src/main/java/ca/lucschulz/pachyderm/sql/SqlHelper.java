@@ -7,13 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import ca.lucschulz.pachyderm.Utils;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
 
 public class SqlHelper extends SQLiteOpenHelper {
@@ -67,54 +63,12 @@ public class SqlHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<TaskItem> retrieveItems() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(cmds.retrieveItems(), null);
-
-        List<TaskItem> taskItems = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            while(!cursor.isAfterLast()) {
-                String id = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyId()));
-                String name = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyTaskDescription()));
-                String date = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateAdded()));
-                int comp = cursor.getInt(cursor.getColumnIndex(SqlStrings.getKeyCompleted()));
-
-
-                Boolean completed;
-                if (comp > 0)
-                    completed = true;
-                else
-                    completed = false;
-
-                Date dt = null;
-                try {
-                    dt = Utils.convertStringToDate(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                TaskItem ti = new TaskItem();
-                ti.setTaskId(id);
-                ti.setTaskDescription(name);
-                ti.setDateAdded(dt);
-                ti.setCompleted(completed);
-
-                taskItems.add(ti);
-
-                cursor.moveToNext();
-            }
-        }
-
-        return taskItems;
-    }
-
     public void clearTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(SqlStrings.getTableTaskItems(), null, null);
     }
 
-    public void UpdateTaskCompleted(int id, boolean isCompleted) {
+    public void updateTaskCompleted(int id, boolean isCompleted) {
         SQLiteDatabase db = this.getWritableDatabase();
         String strFilter = "id = " + id;
         ContentValues args = new ContentValues();

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,8 +37,7 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
     public void onBindViewHolder(TaskItemHolder holder, int position) {
 
         // Format the added and due dates.
-        DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat time = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Retrieve data elements from the query results.
         Date dtAdded = taskList.get(position).getDateAdded();
@@ -54,13 +52,11 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         // Check if there is an "added" date and populate.
         if (dtAdded != null) {
             holder.itmDateAdded.setText(date.format(dtAdded));
-            holder.itmTimeAdded.setText(time.format(dtAdded));
         }
 
         // Check if there is a "due" date and populate.
         if (dtDue != null) {
             holder.itmDateDue.setText(date.format(dtDue));
-            holder.itmTimeDue.setText(time.format(dtDue));
         }
 
         // Check if marked complete or not.

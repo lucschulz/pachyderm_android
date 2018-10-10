@@ -26,11 +26,11 @@ public class CheckBoxHandler implements CheckBox.OnCheckedChangeListener {
 
         if (isChecked) {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            sqlHelper.UpdateTaskCompleted(taskId, true);
+            sqlHelper.updateTaskCompleted(taskId, true);
 
         } else {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            sqlHelper.UpdateTaskCompleted(taskId, false);
+            sqlHelper.updateTaskCompleted(taskId, false);
         }
     }
 }
