@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calDueDate.set(Calendar.HOUR, hourOfDay);
+                calDueDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calDueDate.set(Calendar.MINUTE, minute);
                 updateDueDate();
             }
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         etDueTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(context, time, calDueDate.get(Calendar.HOUR), calDueDate.get(Calendar.MINUTE), true).show();
+                new TimePickerDialog(context, time, calDueDate.get(Calendar.HOUR_OF_DAY), calDueDate.get(Calendar.MINUTE), true).show();
             }
         });
     }
@@ -198,11 +198,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void clearTaskDescription() {
-        EditText et = findViewById(R.id.etAddItem);
-        et.setText(null);
-    }
-
     private void setClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
         Button btnClearItems = findViewById(R.id.btnClearItems);
         btnClearItems.setOnClickListener(new OnClickListener() {
@@ -228,5 +223,15 @@ public class MainActivity extends AppCompatActivity {
     private void showSettings() {
         Intent settingsScreen = new Intent(this, Settings.class);
         startActivity(settingsScreen);
+    }
+
+    private void clearTaskDescription() {
+        EditText etDescription = findViewById(R.id.etAddItem);
+        EditText etDueDate = findViewById(R.id.etDueDate);
+        EditText etDueTime = findViewById(R.id.etDueTime);
+
+        etDescription.setText(null);
+        etDueDate.setText(null);
+        etDueTime.setText(null);
     }
 }
