@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,15 +44,20 @@ public class SqlHelper extends SQLiteOpenHelper {
         try
         {
             String taskDescription = taskItem.getTaskDescription();
-            Date dateAdded = taskItem.getDateAdded();
+            Date dateAdded = new Date();
             Date dateDue = taskItem.getDateDue();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String sdfDateAdded = sdf.format(dateAdded);
+            String sdfDueDate = sdf.format(dateDue);
+
 
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues insertValues = new ContentValues();
             insertValues.put(SqlStrings.getKeyTaskDescription(), taskDescription);
-            insertValues.put(SqlStrings.getKeyDateAdded(), String.valueOf(dateAdded));
-            insertValues.put(SqlStrings.getKeyDateDue(), String.valueOf(dateDue));
+            insertValues.put(SqlStrings.getKeyDateAdded(), sdfDateAdded);
+            insertValues.put(SqlStrings.getKeyDateDue(), sdfDueDate);
 
             db.insert(SqlStrings.getTableTaskItems(), null, insertValues);
         }

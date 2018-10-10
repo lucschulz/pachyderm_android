@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskItemsAdapter tAdapter;
 
     private TimeZone tz;
-    private Calendar dueDateCalendar;
+    private Calendar calDueDate;
     private EditText etDueDate;
     private EditText etDueTime;
 
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private void configureCalendar() {
         tz = TimeZone.getDefault();
         TimeZone.setDefault(tz);
-        dueDateCalendar = Calendar.getInstance(tz);
+        calDueDate = Calendar.getInstance(tz);
     }
 
     @Override
@@ -109,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dueDateCalendar.set(Calendar.YEAR, year);
-                dueDateCalendar.set(Calendar.MONTH, month);
-                dueDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calDueDate.set(Calendar.YEAR, year);
+                calDueDate.set(Calendar.MONTH, month);
+                calDueDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateDueDate();
             }
         };
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(context, date, dueDateCalendar.get(Calendar.YEAR), dueDateCalendar.get(Calendar.MONTH), dueDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(context, date, calDueDate.get(Calendar.YEAR), calDueDate.get(Calendar.MONTH), calDueDate.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
     }
@@ -129,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                dueDateCalendar.set(Calendar.HOUR, hourOfDay);
-                dueDateCalendar.set(Calendar.MINUTE, minute);
+                calDueDate.set(Calendar.HOUR, hourOfDay);
+                calDueDate.set(Calendar.MINUTE, minute);
                 updateDueDate();
             }
         };
@@ -138,17 +137,17 @@ public class MainActivity extends AppCompatActivity {
         etDueTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(context, time, dueDateCalendar.get(Calendar.HOUR), dueDateCalendar.get(Calendar.MINUTE), true).show();
+                new TimePickerDialog(context, time, calDueDate.get(Calendar.HOUR), calDueDate.get(Calendar.MINUTE), true).show();
             }
         });
     }
 
     private void updateDueDate() {
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        etDueDate.setText(date.format(dueDateCalendar.getTime()));
+        etDueDate.setText(date.format(calDueDate.getTime()));
 
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
-        etDueTime.setText(time.format(dueDateCalendar.getTime()));
+        etDueTime.setText(time.format(calDueDate.getTime()));
     }
 
     private void configureEventListeners() {
@@ -166,30 +165,21 @@ public class MainActivity extends AppCompatActivity {
                 EditText dueDate = findViewById(R.id.etDueDate);
                 EditText dueTime = findViewById(R.id.etDueTime);
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String stringDueDate = String.valueOf(dueDate.getText());
+                String stringDueTime = String.valueOf(dueTime.getText());
+                Date formattedDate = null;
 
-                Date dPart = null;
-                Date tPart = null;
-
-                try {
-                    dPart = sdf.parse(String.valueOf(dueDate.getText()));
-                    tPart = sdf.parse(String.valueOf(dueTime.getText()));
-                }
-                catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
                 try {
-                    Date date = sdf.parse(String.valueOf(dPart));
+                    formattedDate = sdf.parse(stringDueDate + " " + stringDueTime);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    e.printStackTrace();
                 }
-
 
                 TaskItem taskItem = new TaskItem();
                 taskItem.setTaskDescription(String.valueOf(taskDescription.getText()));
-                taskItem.setDateDue(dtResult);
+                taskItem.setDateDue(formattedDate);
 
 
                 AddTask addTask = new AddTask(getApplicationContext());
