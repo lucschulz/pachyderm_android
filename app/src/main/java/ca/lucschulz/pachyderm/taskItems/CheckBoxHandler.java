@@ -3,9 +3,11 @@ package ca.lucschulz.pachyderm.taskItems;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import ca.lucschulz.pachyderm.R;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 
 public class CheckBoxHandler implements CheckBox.OnCheckedChangeListener {
@@ -26,13 +28,15 @@ public class CheckBoxHandler implements CheckBox.OnCheckedChangeListener {
         SqlHelper sqlHelper = new SqlHelper(context);
 
         if (isChecked) {
+            int backColor = ContextCompat.getColor(context, R.color.checkedItemBackground);
+
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.itmLayout.setBackgroundColor(Color.rgb(170, 230, 250));
+            holder.itmLayout.setBackgroundColor(backColor);
             sqlHelper.updateTaskCompleted(taskId, true);
 
         } else {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.itmLayout.setBackgroundColor(Color.rgb(255, 255, 255));
+            holder.itmLayout.setBackgroundColor(Color.WHITE);
             sqlHelper.updateTaskCompleted(taskId, false);
         }
     }

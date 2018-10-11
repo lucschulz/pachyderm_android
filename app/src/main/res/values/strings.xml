@@ -22,4 +22,9 @@
     <string name="creative_minds_logo">Creative Minds Logo</string>
     <string name="www_lucschulz_ca">www.lucschulz.ca</string>
     <string name="application_logo">Application logo.</string>
+
+    <!--TOAST-->
+    <string name="toastItemAdded">Item added.</string>
+    <string name="toastEnterTaskDescription">Please enter a task description.</string>
+
 </resources>

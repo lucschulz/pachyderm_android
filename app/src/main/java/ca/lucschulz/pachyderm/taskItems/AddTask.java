@@ -6,6 +6,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.util.List;
 
+import ca.lucschulz.pachyderm.R;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 
 public class AddTask {
@@ -32,10 +33,12 @@ public class AddTask {
             retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 
-            Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show();
+            String msg = context.getResources().getString(R.string.toastItemAdded);
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(context, "Please enter a task description.", Toast.LENGTH_SHORT).show();
+            String msg = context.getResources().getString(R.string.toastEnterTaskDescription);
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
 }
