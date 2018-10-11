@@ -54,6 +54,7 @@ public class SqlHelper extends SQLiteOpenHelper {
             insertValues.put(SqlStrings.getKeyTaskDescription(), taskDescription);
             insertValues.put(SqlStrings.getKeyDateAdded(), sdfDateAdded);
             insertValues.put(SqlStrings.getKeyDateDue(), sdfDueDate);
+            insertValues.put(SqlStrings.getKeyCompleted(), false);
 
             db.insert(SqlStrings.getTableTaskItems(), null, insertValues);
         }

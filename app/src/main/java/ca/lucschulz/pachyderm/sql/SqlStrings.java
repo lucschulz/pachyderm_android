@@ -66,6 +66,6 @@ public class SqlStrings {
     }
 
     public String retrieveItems() {
-        return "SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED;
+        return "SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED + ", " + KEY_DATE_DUE + " ASC";
     }
 }
