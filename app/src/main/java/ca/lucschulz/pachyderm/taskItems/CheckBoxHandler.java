@@ -1,6 +1,7 @@
 package ca.lucschulz.pachyderm.taskItems;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,10 +27,12 @@ public class CheckBoxHandler implements CheckBox.OnCheckedChangeListener {
 
         if (isChecked) {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.itmLayout.setBackgroundColor(Color.rgb(170, 230, 250));
             sqlHelper.updateTaskCompleted(taskId, true);
 
         } else {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.itmLayout.setBackgroundColor(Color.rgb(255, 255, 255));
             sqlHelper.updateTaskCompleted(taskId, false);
         }
     }

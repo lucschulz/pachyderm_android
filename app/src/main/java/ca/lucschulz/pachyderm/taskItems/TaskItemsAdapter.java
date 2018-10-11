@@ -1,6 +1,7 @@
 package ca.lucschulz.pachyderm.taskItems;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         // Check if marked complete or not.
         if (isCompleted) {
             holder.itmTaskDescription.setPaintFlags(holder.itmTaskDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.itmLayout.setBackgroundColor(Color.rgb(170, 230, 250));
         }
 
         // If the entry is the last one created (as opposed to having been pulled from the DB), fetch ID and append to allow referencing.
