@@ -25,12 +25,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import ca.lucschulz.pachyderm.sql.SqlHelper;
-import ca.lucschulz.pachyderm.taskItems.AddTask;
 import ca.lucschulz.pachyderm.taskItems.RetrieveTasks;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
@@ -155,47 +153,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureEventListeners() {
-        setAddItemClickListener();
-        setClearItemsClickListener(this, tAdapter);
-    }
-
-    private void setAddItemClickListener() {
         Button btnAddItem = findViewById(R.id.btnAddItem);
-        btnAddItem.setOnClickListener(new OnClickListener() {
+        EditText taskDescription = findViewById(R.id.etAddItem);
+        EditText dueDate = findViewById(R.id.etDueDate);
+        EditText dueTime = findViewById(R.id.etDueTime);
 
-            @Override
-            public void onClick(View v) {
-                EditText taskDescription = findViewById(R.id.etAddItem);
-                EditText dueDate = findViewById(R.id.etDueDate);
-                EditText dueTime = findViewById(R.id.etDueTime);
+        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter);
+        handler.configureAddItemClickListener(btnAddItem, taskDescription, dueDate, dueTime);
 
-                String stringDueDate = String.valueOf(dueDate.getText());
-                String stringDueTime = String.valueOf(dueTime.getText());
-                Date formattedDate = null;
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-                try {
-                    formattedDate = sdf.parse(stringDueDate + " " + stringDueTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                TaskItem taskItem = new TaskItem();
-                taskItem.setTaskDescription(String.valueOf(taskDescription.getText()));
-                taskItem.setDateDue(formattedDate);
-
-
-                AddTask addTask = new AddTask(getApplicationContext());
-                try {
-                    addTask.addNewTask(taskItem, taskList, tAdapter);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                clearTaskDescription();
-            }
-        });
+        clearTaskDescription();
+        setClearItemsClickListener(this, tAdapter);
     }
 
     private void setClearItemsClickListener(final Context context, final TaskItemsAdapter adapter) {
