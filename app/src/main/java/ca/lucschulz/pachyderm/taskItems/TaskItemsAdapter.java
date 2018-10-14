@@ -1,8 +1,10 @@
 package ca.lucschulz.pachyderm.taskItems;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ca.lucschulz.pachyderm.ItemDetailsActivity;
 import ca.lucschulz.pachyderm.R;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 
@@ -80,15 +83,24 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         configureLongClick(holder);
     }
 
-    private void configureListeners(TaskItemHolder holder, String taskId) {
+    private void configureListeners(TaskItemHolder holder, final String taskId) {
         holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
 
         holder.itmPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "MORE DETAILS TEST", Toast.LENGTH_SHORT).show();
+                int id = Integer.parseInt(taskId);
+                openItemDetails(id);
             }
         });
+    }
+
+    private void openItemDetails(int taskId) {
+        Intent intent = new Intent(context, ItemDetailsActivity.class);
+        Bundle taskIdBundle = new Bundle();
+        taskIdBundle.putInt("TaskID", taskId);
+        intent.putExtras(taskIdBundle);
+        context.startActivity(intent);
     }
 
     private void configureLongClick(TaskItemHolder holder) {

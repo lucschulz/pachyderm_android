@@ -29,4 +29,9 @@
     <string name="toastTaskListCleared">Task list cleared.</string>
     <string name="tvPlus">+</string>
 
+
+    <!--KEYS-->
+    <string name="keyTaskID">TaskID</string>
+    <string name="task_description">Task Description</string>
+
 </resources>
