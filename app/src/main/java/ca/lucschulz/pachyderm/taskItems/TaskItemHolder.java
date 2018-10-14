@@ -16,6 +16,7 @@ public class TaskItemHolder extends RecyclerView.ViewHolder {
     public TextView itmDateAdded;
     public TextView itmDateDue;
     public CheckBox itmCheckBox;
+    public TextView itmPlus;
 
     public TaskItemHolder(View view) {
         super(view);
@@ -26,5 +27,6 @@ public class TaskItemHolder extends RecyclerView.ViewHolder {
         itmDateAdded = view.findViewById(R.id.item_dateAdded);
         itmDateDue = view.findViewById(R.id.item_dateDue);
         itmCheckBox = view.findViewById(R.id.cbCompleted);
+        itmPlus = view.findViewById(R.id.itmPlus);
     }
 }

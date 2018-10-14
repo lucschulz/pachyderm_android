@@ -93,4 +93,16 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/itmPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvTaskId"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="-11dp"
+        android:text="@string/tvPlus"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
+
 </RelativeLayout>

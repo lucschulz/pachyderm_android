@@ -71,17 +71,24 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         if (taskId == null) {
             SqlHelper sqlHelper = new SqlHelper(context);
             String latestTaskId = sqlHelper.getMostRecentId();
-            configureCheckChangeListener(holder, latestTaskId);
+            configureListeners(holder, latestTaskId);
         }
         else {
-            configureCheckChangeListener(holder, taskId);
+            configureListeners(holder, taskId);
         }
 
         configureLongClick(holder);
     }
 
-    private void configureCheckChangeListener(TaskItemHolder holder, String taskId) {
+    private void configureListeners(TaskItemHolder holder, String taskId) {
         holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
+
+        holder.itmPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "MORE DETAILS TEST", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void configureLongClick(TaskItemHolder holder) {
