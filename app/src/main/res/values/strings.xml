@@ -26,5 +26,6 @@
     <!--TOAST-->
     <string name="toastItemAdded">Item added.</string>
     <string name="toastEnterTaskDescription">Please enter a task description.</string>
+    <string name="toastTaskListCleared">Task list cleared.</string>
 
 </resources>

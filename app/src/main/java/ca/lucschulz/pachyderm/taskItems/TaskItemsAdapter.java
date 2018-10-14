@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,19 +68,31 @@ public class TaskItemsAdapter extends RecyclerView.Adapter<TaskItemHolder> {
         }
 
         // If the entry is the last one created (as opposed to having been pulled from the DB), fetch ID and append to allow referencing.
-        if (taskId == null)
-        {
+        if (taskId == null) {
             SqlHelper sqlHelper = new SqlHelper(context);
-            String id = sqlHelper.getMostRecentId();
-            holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(id), holder, context));
+            String latestTaskId = sqlHelper.getMostRecentId();
+            configureCheckChangeListener(holder, latestTaskId);
         }
-        else
-        {
-            holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
+        else {
+            configureCheckChangeListener(holder, taskId);
         }
+
+        configureLongClick(holder);
     }
 
+    private void configureCheckChangeListener(TaskItemHolder holder, String taskId) {
+        holder.itmCheckBox.setOnCheckedChangeListener(new CheckBoxHandler(Integer.parseInt(taskId), holder, context));
+    }
 
+    private void configureLongClick(TaskItemHolder holder) {
+        holder.itmLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "LONG CLICK TEST", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {

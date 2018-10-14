@@ -36,6 +36,16 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void createTables() {
+        SQLiteDatabase db = getWritableDatabase();
+        SqlTables sqlTables = new SqlTables();
+        String taskItems = sqlTables.createTaskItemsTable();
+        String settings = sqlTables.createSettingsTable();
+
+        db.execSQL(taskItems);
+        db.execSQL(settings);
+    }
+
     public void insertNewTaskItem(TaskItem taskItem) {
         try
         {
@@ -75,6 +85,12 @@ public class SqlHelper extends SQLiteOpenHelper {
         ContentValues args = new ContentValues();
         args.put(SqlStrings.getKeyCompleted(), isCompleted);
         db.update(SqlStrings.getTableTaskItems(), args, strFilter, null);
+    }
+
+    public void dropTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE task_items");
+        db.execSQL("DROP TABLE settings");
     }
 
     public String getMostRecentId() {

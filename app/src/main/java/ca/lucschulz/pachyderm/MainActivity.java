@@ -176,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
                 taskList.clear();
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Task list cleared.", Toast.LENGTH_SHORT).show();
+                String msg = getString(R.string.toastTaskListCleared);
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
