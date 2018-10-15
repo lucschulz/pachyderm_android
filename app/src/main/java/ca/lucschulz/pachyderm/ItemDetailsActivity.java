@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import ca.lucschulz.pachyderm.sql.SqlHelper;
+
 public class ItemDetailsActivity extends AppCompatActivity {
 
     int taskId;
@@ -20,7 +22,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         int id = bundle.getInt(key);
         this.taskId = id;
 
-        TextView tv = findViewById(R.id.tvItemDetailsDescription);
-        tv.setText("TEST");
+        TextView tv = findViewById(R.id.details_tvDescription);
+//        tv.setText(String.valueOf(id));
+        tv.setText("DESCRIPTION OF A TASK");
+    }
+
+    private void retrieveDetails() {
+        SqlHelper helper = new SqlHelper(this);
+
     }
 }

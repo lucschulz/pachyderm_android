@@ -9,14 +9,63 @@
     tools:context=".ItemDetailsActivity">
 
     <TextView
-        android:id="@+id/tvItemDetailsDescription"
+        android:id="@+id/details_tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
         android:text="@string/task_description"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/details_tvDateAdded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/date_added"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_tvDescription" />
+
+    <TextView
+        android:id="@+id/details_tvDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/due_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_tvDateAdded" />
+
+    <EditText
+        android:id="@+id/details_tvNotes"
+        android:layout_width="0dp"
+        android:layout_height="205dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/notes"
+        android:inputType="textMultiLine"
+        android:textAlignment="viewStart"
+        android:gravity="top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_tvDescription" />
+
+    <Button
+        android:id="@+id/details_btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_tvNotes" />
+
 </android.support.constraint.ConstraintLayout>

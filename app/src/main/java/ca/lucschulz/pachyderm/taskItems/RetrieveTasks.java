@@ -15,10 +15,17 @@ import ca.lucschulz.pachyderm.sql.SqlStrings;
 
 public class RetrieveTasks {
 
-    private Context context;
+    public enum QueryType {
+        AllItems,
+        ItemDetails
+    }
 
-    public RetrieveTasks(Context context) {
+    private Context context;
+    private QueryType queryType;
+
+    public RetrieveTasks(Context context, QueryType queryType) {
         this.context = context;
+        this.queryType = queryType;
     }
 
 
@@ -30,18 +37,17 @@ public class RetrieveTasks {
 
         for (TaskItem task : taskItemList) {
 
-            String id = task.getTaskId();
-            String description = task.getTaskDescription();
-            Date dateAdded = task.getDateAdded();
-            Date dateDue = task.getDateDue();
-            Boolean completed = task.getCompleted();
-
             TaskItem taskItem = new TaskItem();
-            taskItem.setTaskId(id);
-            taskItem.setTaskDescription(description);
-            taskItem.setDateAdded(dateAdded);
-            taskItem.setDateDue(dateDue);
-            taskItem.setCompleted(completed);
+
+            taskItem.setTaskId(task.getTaskId());
+            taskItem.setTaskDescription(task.getTaskDescription());
+            taskItem.setDateAdded(task.getDateAdded());
+            taskItem.setDateDue(task.getDateDue());
+            taskItem.setCompleted(task.getCompleted());
+
+            if (queryType == QueryType.ItemDetails) {
+                taskItem.setNotes(task.getNotes());
+            }
 
             taskList.add(taskItem);
             tAdapter.notifyDataSetChanged();
@@ -59,31 +65,7 @@ public class RetrieveTasks {
 
         if (cursor.moveToFirst()) {
             while(!cursor.isAfterLast()) {
-                String sqlID = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyId()));
-                String sqlDescription = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyTaskDescription()));
-                String sqlDateAdded = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateAdded()));
-                String sqlDateDue = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateDue()));
-                int sqlCompleted = cursor.getInt(cursor.getColumnIndex(SqlStrings.getKeyCompleted()));
-
-
-                Boolean completed;
-                if (sqlCompleted > 0)
-                    completed = true;
-                else
-                    completed = false;
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-                Date dtDateAdded = sdf.parse(sqlDateAdded);
-                Date dtDateDue = sdf.parse(sqlDateDue);
-
-                TaskItem ti = new TaskItem();
-                ti.setTaskId(sqlID);
-                ti.setTaskDescription(sqlDescription);
-                ti.setDateAdded(dtDateAdded);
-                ti.setDateDue(dtDateDue);
-                ti.setCompleted(completed);
-
+                TaskItem ti = populateTaskItem(cursor);
                 taskItems.add(ti);
 
                 cursor.moveToNext();
@@ -91,5 +73,38 @@ public class RetrieveTasks {
         }
 
         return taskItems;
+    }
+
+    private TaskItem populateTaskItem(Cursor cursor) throws ParseException {
+        String sqlID = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyId()));
+        String sqlDescription = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyTaskDescription()));
+        String sqlDateAdded = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateAdded()));
+        String sqlDateDue = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateDue()));
+        int sqlCompleted = cursor.getInt(cursor.getColumnIndex(SqlStrings.getKeyCompleted()));
+
+        Boolean completed;
+        if (sqlCompleted > 0)
+            completed = true;
+        else
+            completed = false;
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date dtDateAdded = sdf.parse(sqlDateAdded);
+        Date dtDateDue = sdf.parse(sqlDateDue);
+
+        TaskItem ti = new TaskItem();
+        ti.setTaskId(sqlID);
+        ti.setTaskDescription(sqlDescription);
+        ti.setDateAdded(dtDateAdded);
+        ti.setDateDue(dtDateDue);
+        ti.setCompleted(completed);
+
+        if (queryType == QueryType.ItemDetails) {
+            String notes = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyNotes()));
+            ti.setNotes(notes);
+        }
+
+        return ti;
     }
 }

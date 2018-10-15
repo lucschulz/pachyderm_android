@@ -9,6 +9,7 @@ public class TaskItem {
     private Date dateAdded;
     private Date dateDue;
     private boolean completed;
+    private String notes;
 
     public TaskItem() {
     }
@@ -51,5 +52,13 @@ public class TaskItem {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

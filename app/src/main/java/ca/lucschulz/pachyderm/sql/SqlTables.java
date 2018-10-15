@@ -14,7 +14,9 @@ public class SqlTables extends SqlStrings {
                 .append(getKeyDateDue())
                 .append(" DATE, ")
                 .append(getKeyCompleted())
-                .append(" BIT)");
+                .append(" BIT, ")
+                .append(getKeyNotes())
+                .append(" TEXT)");
 
         return sb.toString();
     }

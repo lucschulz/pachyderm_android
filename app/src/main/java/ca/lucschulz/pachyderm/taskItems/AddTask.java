@@ -29,7 +29,7 @@ public class AddTask {
 
             taskList.clear();
 
-            RetrieveTasks retrieve = new RetrieveTasks(context);
+            RetrieveTasks retrieve = new RetrieveTasks(context, RetrieveTasks.QueryType.AllItems);
             retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 

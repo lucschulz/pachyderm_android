@@ -33,5 +33,7 @@
     <!--KEYS-->
     <string name="keyTaskID">TaskID</string>
     <string name="task_description">Task Description</string>
+    <string name="notes">Notes</string>
+    <string name="save">Save</string>
 
 </resources>

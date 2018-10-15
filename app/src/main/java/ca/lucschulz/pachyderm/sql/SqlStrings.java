@@ -11,6 +11,7 @@ public class SqlStrings {
     private static final String KEY_DATE_ADDED = "date_added";
     private static final String KEY_DATE_DUE = "date_due";
     private static final String KEY_COMPLETED = "completed";
+    private static final String KEY_NOTES = "notes";
 
     private static final String TABLE_SETTINGS = "settings";
     private static final String KEY_SETTING_NAME = "setting_name";
@@ -48,6 +49,8 @@ public class SqlStrings {
         return KEY_DATE_DUE;
     }
 
+    public static String getKeyNotes() { return KEY_NOTES; }
+
     public static String getTableSettings() {
         return TABLE_SETTINGS;
     }
@@ -67,5 +70,9 @@ public class SqlStrings {
 
     public String retrieveItems() {
         return "SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED + ", " + KEY_DATE_DUE + " ASC";
+    }
+
+    public String retrieveItemWithDetails(int taskId) {
+        return "SELECT * FROM " + TABLE_TASK_ITEMS + " WHERE " + KEY_ID + " = " + taskId;
     }
 }
