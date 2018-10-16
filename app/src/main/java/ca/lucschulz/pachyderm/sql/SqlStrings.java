@@ -68,11 +68,11 @@ public class SqlStrings {
         return "DROP TABLE IF EXISTS " + getTableTaskItems();
     }
 
-    public String retrieveItems() {
+    public String retrieveAllItems() {
         return "SELECT * FROM " + TABLE_TASK_ITEMS + " ORDER BY " + KEY_COMPLETED + ", " + KEY_DATE_DUE + " ASC";
     }
 
-    public String retrieveItemWithDetails(int taskId) {
+    public String retrieveSingleItemWithDetails(int taskId) {
         return "SELECT * FROM " + TABLE_TASK_ITEMS + " WHERE " + KEY_ID + " = " + taskId;
     }
 }

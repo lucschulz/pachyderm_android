@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         configureEventListeners();
 
-        RetrieveTasks retrieve = new RetrieveTasks(this, RetrieveTasks.QueryType.AllItems);
+        RetrieveTasks retrieve = new RetrieveTasks(this);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
