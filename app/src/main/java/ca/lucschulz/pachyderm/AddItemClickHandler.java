@@ -32,8 +32,8 @@ public class AddItemClickHandler {
 
             @Override
             public void onClick(View v) {
-//                EditText taskDescription = findViewById(R.id.etAddItem);
-//                EditText dueDate = findViewById(R.id.etDueDate);
+//                EditText tvTaskDescription = findViewById(R.id.etAddItem);
+//                EditText tvDueDate = findViewById(R.id.etDueDate);
 //                EditText dueTime = findViewById(R.id.etDueTime);
 
                 String stringDueDate = String.valueOf(dueDate.getText());

@@ -16,6 +16,7 @@ public abstract class PopulateTaskItems {
         String sqlDateAdded = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateAdded()));
         String sqlDateDue = cursor.getString(cursor.getColumnIndex(SqlStrings.getKeyDateDue()));
         int sqlCompleted = cursor.getInt(cursor.getColumnIndex(SqlStrings.getKeyCompleted()));
+        String notes = cursor.getString(cursor.getColumnIndex((SqlStrings.getKeyNotes())));
 
         Boolean completed;
         if (sqlCompleted > 0)
@@ -34,6 +35,10 @@ public abstract class PopulateTaskItems {
         ti.setDateAdded(dtDateAdded);
         ti.setDateDue(dtDateDue);
         ti.setCompleted(completed);
+
+        if (notes != null) {
+            ti.setNotes(notes);
+        }
 
         return ti;
     }
