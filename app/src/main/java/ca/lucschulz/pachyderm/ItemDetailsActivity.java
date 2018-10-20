@@ -2,6 +2,8 @@ package ca.lucschulz.pachyderm;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -41,8 +43,22 @@ public class ItemDetailsActivity extends AppCompatActivity {
         tvNotes = findViewById(R.id.details_tvNotes);
     }
 
+    private void configureSaveButton() {
+        Button btnSave = findViewById(R.id.details_btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveChanges();
+            }
+        });
+    }
+
+    private void saveChanges() {
+        // TODO Save changes to database and close activity.
+        // Switch back to main screen.
+    }
+
     private void retrieveDetails() {
-        SqlHelper helper = new SqlHelper(this);
         RetrieveSingleTask retrieve = new RetrieveSingleTask(this);
 
         TaskItem ti = null;
