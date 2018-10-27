@@ -55,8 +55,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
     private void saveChangesToItemDetails() {
-        // TODO Save changes to database and close activity.
-        // Switch back to main screen.
+        // TODO Switch back to main screen or display save confirmation.
 
         String notes = String.valueOf(tvNotes.getText());
 
@@ -80,6 +79,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             tvTaskDescription.setText(ti.getTaskDescription());
             tvDateAdded.setText(date.format(ti.getDateAdded()));
             tvDueDate.setText(date.format(ti.getDateDue()));
+            tvNotes.setText(ti.getNotes());
         }
     }
 }
