@@ -33,6 +33,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         this.taskId = id;
 
         instantiateControls();
+        configureSaveButton();
         retrieveDetails();
     }
 
@@ -48,14 +49,19 @@ public class ItemDetailsActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveChanges();
+                saveChangesToItemDetails();
             }
         });
     }
 
-    private void saveChanges() {
+    private void saveChangesToItemDetails() {
         // TODO Save changes to database and close activity.
         // Switch back to main screen.
+
+        String notes = String.valueOf(tvNotes.getText());
+
+        SqlHelper helper = new SqlHelper(this);
+        boolean success = helper.saveNotesToRecord(notes, taskId);
     }
 
     private void retrieveDetails() {

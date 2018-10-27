@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -85,6 +86,26 @@ public class SqlHelper extends SQLiteOpenHelper {
         ContentValues args = new ContentValues();
         args.put(SqlStrings.getKeyCompleted(), isCompleted);
         db.update(SqlStrings.getTableTaskItems(), args, strFilter, null);
+    }
+
+    public boolean saveNotesToRecord(String notes, int taskId) {
+        String table = SqlStrings.getTableTaskItems();
+        String colNotes = SqlStrings.getKeyNotes();
+        String colId = SqlStrings.getKeyId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement("UPDATE " + table + " SET " + colNotes + " = ? WHERE " + colId + " = ?");
+
+        stmt.bindString(1, notes);
+        stmt.bindLong(2, taskId);
+
+        int recordsAffected = stmt.executeUpdateDelete();
+
+        if (recordsAffected > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public void dropTable() {
