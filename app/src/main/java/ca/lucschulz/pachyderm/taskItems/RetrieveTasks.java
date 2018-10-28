@@ -6,17 +6,21 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 import ca.lucschulz.pachyderm.sql.SqlStrings;
 
 public class RetrieveTasks extends PopulateTaskItems {
 
     private Context context;
+    private Notifications notifications;
 
-    public RetrieveTasks(Context context) {
+    public RetrieveTasks(Context context, Notifications notifications) {
         this.context = context;
+        this.notifications = notifications;
     }
 
 
@@ -38,7 +42,16 @@ public class RetrieveTasks extends PopulateTaskItems {
 
             taskList.add(taskItem);
             tAdapter.notifyDataSetChanged();
+
+            setDueDateReminder(task);
         }
+    }
+
+    private void setDueDateReminder(TaskItem task) {
+        String title = task.getTaskDescription();
+        Date dueDate = task.getDateDue();
+
+        notifications.createNewNotification(title, "This task is overdue.", dueDate);
     }
 
     private List<TaskItem> retrieveItems() throws ParseException {

@@ -7,14 +7,17 @@ import java.text.ParseException;
 import java.util.List;
 
 import ca.lucschulz.pachyderm.R;
+import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 
 public class AddTask {
 
     private Context context;
+    private Notifications notifications;
 
-    public AddTask(Context context) {
+    public AddTask(Context context, Notifications notifications) {
         this.context = context;
+        this.notifications = notifications;
     }
 
 
@@ -29,7 +32,7 @@ public class AddTask {
 
             taskList.clear();
 
-            RetrieveTasks retrieve = new RetrieveTasks(context);
+            RetrieveTasks retrieve = new RetrieveTasks(context, notifications);
             retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 

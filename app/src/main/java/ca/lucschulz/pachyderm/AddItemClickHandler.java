@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.taskItems.AddTask;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
@@ -19,11 +20,13 @@ public class AddItemClickHandler {
     private Context context;
     private List<TaskItem> taskList;
     private TaskItemsAdapter tAdapter;
+    private Notifications notifications;
 
-    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter) {
+    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter, Notifications notifications) {
         this.context = context;
         this.taskList = taskList;
         this.tAdapter = tAdapter;
+        this.notifications = notifications;
     }
 
     public void configureAddItemClickListener(Button btnAddItem, final EditText taskDescription, final EditText dueDate, final EditText dueTime) {
@@ -53,7 +56,7 @@ public class AddItemClickHandler {
                 taskItem.setDateDue(formattedDate);
 
 
-                AddTask addTask = new AddTask(context.getApplicationContext());
+                AddTask addTask = new AddTask(context.getApplicationContext(), notifications);
                 try {
                     addTask.addNewTask(taskItem, taskList, tAdapter);
                 } catch (ParseException e) {

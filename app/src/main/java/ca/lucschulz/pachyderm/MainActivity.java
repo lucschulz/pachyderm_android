@@ -1,18 +1,11 @@
 package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
+    Notifications notifications;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        Notifications notif = new Notifications(this);
-        NotificationManager nm = getSystemService(NotificationManager.class);
-        notif.configureNotificationChannel(nm);
+        configureNotifications();
 
         configureCalendar();
 
@@ -76,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         configureEventListeners();
 
-        RetrieveTasks retrieve = new RetrieveTasks(this);
+        RetrieveTasks retrieve = new RetrieveTasks(this, notifications);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
@@ -87,8 +80,12 @@ public class MainActivity extends AppCompatActivity {
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
+    }
 
-        notif.configureNotifications();
+    private void configureNotifications() {
+        notifications = new Notifications(this);
+        NotificationManager nm = getSystemService(NotificationManager.class);
+        notifications.configureNotificationChannel(nm);
     }
 
     private void configureCalendar() {
@@ -174,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         EditText dueDate = findViewById(R.id.etDueDate);
         EditText dueTime = findViewById(R.id.etDueTime);
 
-        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter);
+        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter, notifications);
         handler.configureAddItemClickListener(btnAddItem, taskDescription, dueDate, dueTime);
 
         clearTaskDescription();

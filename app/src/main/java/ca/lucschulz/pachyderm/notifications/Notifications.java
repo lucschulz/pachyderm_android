@@ -7,8 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+
+import java.util.Date;
 
 import ca.lucschulz.pachyderm.MainActivity;
 import ca.lucschulz.pachyderm.R;
@@ -19,9 +22,13 @@ public class Notifications extends Activity {
     private NotificationChannel channel;
 
     private Context context;
+    private NotificationCompat.Builder mBuilder;
+
+    private static int notificationId;
 
     public Notifications(Context context) {
         this.context = context;
+        this.notificationId = 0;
     }
 
 
@@ -30,8 +37,8 @@ public class Notifications extends Activity {
 //            CharSequence name = getString(R.string.notif_ChannelName);
 //            String description = getString(R.string.notif_ChannelDescription);
 
-            CharSequence name = "Test notif";
-            String description = "This is a test notification.";
+            CharSequence name = "Due date notification";
+            String description = "Pachyderm due date notification.";
 
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -44,16 +51,30 @@ public class Notifications extends Activity {
         channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
     }
 
-    public void configureNotifications() {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channel.getId())
+
+    public void createNewNotification(final String title, final String text, Date dueDate) {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                configureNotificationProperties(title, text);
+            }
+        };
+
+        handler.postAtTime(runnable, dueDate.getTime());
+        handler.postDelayed(runnable, 1000);
+    }
+
+    private void configureNotificationProperties(String title, String text) {
+        mBuilder = new NotificationCompat.Builder(context, channel.getId())
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Test notification")
-                .setContentText("Test content")
+                .setContentTitle(title)
+                .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(getPendingIntent());
 
         NotificationManagerCompat notif = NotificationManagerCompat.from(context);
-        notif.notify(0, mBuilder.build());
+        notif.notify(notificationId++, mBuilder.build());
     }
 
     private PendingIntent getPendingIntent() {
