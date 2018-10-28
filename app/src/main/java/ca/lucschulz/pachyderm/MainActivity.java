@@ -1,10 +1,17 @@
 package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +42,7 @@ import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String PACHYDERM_NOTIFICATION_ID = "pachyderm_notification_id";
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
 
@@ -43,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
+    private NotificationChannel channel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        configureNotificationChannel();
         configureCalendar();
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
@@ -73,6 +85,31 @@ public class MainActivity extends AppCompatActivity {
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
+
+        configureNotifications();
+    }
+
+    private void configureNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notif_ChannelName);
+            String description = getString(R.string.notif_ChannelDescription);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
+    }
+
+    private void configureNotifications() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel.getId())
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("Test notification")
+                .setContentText("Test content")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
     }
 
     private void configureCalendar() {

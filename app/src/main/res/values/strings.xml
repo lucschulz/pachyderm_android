@@ -23,17 +23,20 @@
     <string name="www_lucschulz_ca">www.lucschulz.ca</string>
     <string name="application_logo">Application logo.</string>
 
-    <!--TOAST-->
+    <!-- TOAST -->
     <string name="toastItemAdded">Item added.</string>
     <string name="toastEnterTaskDescription">Please enter a task description.</string>
     <string name="toastTaskListCleared">Task list cleared.</string>
     <string name="tvPlus">+</string>
 
 
-    <!--KEYS-->
+    <!-- KEYS -->
     <string name="keyTaskID">TaskID</string>
     <string name="task_description">Task Description</string>
     <string name="notes">Notes</string>
     <string name="save">Save</string>
 
+    <!-- NOTIFICATIONS -->
+    <string name="notif_ChannelName">Pachyderm Notifications</string>
+    <string name="notif_ChannelDescription">This is a notification.</string>
 </resources>
