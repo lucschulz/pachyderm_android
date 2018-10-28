@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         configureNotificationChannel();
+
         configureCalendar();
 
         RecyclerView recyclerView = findViewById(R.id.rvMainList);
@@ -87,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         configureDueTime(this);
 
         configureNotifications();
+        configureNotificationTapAction();
+
+
     }
 
     private void configureNotificationChannel() {
@@ -110,6 +115,25 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Test notification")
                 .setContentText("Test content")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notif = NotificationManagerCompat.from(this);
+        notif.notify(0, mBuilder.build());
+    }
+
+    private void configureNotificationTapAction() {
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, PACHYDERM_NOTIFICATION_ID)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
     }
 
     private void configureCalendar() {
