@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 import ca.lucschulz.pachyderm.taskItems.RetrieveTasks;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
@@ -43,7 +44,6 @@ import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String PACHYDERM_NOTIFICATION_ID = "pachyderm_notification_id";
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
 
@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private Calendar calDueDate;
     private EditText etDueDate;
     private EditText etDueTime;
-
-    private NotificationChannel channel;
 
 
     @Override
@@ -62,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        configureNotificationChannel();
+        Notifications notif = new Notifications(this);
+        NotificationManager nm = getSystemService(NotificationManager.class);
+        notif.configureNotificationChannel(nm);
 
         configureCalendar();
 
@@ -88,52 +88,7 @@ public class MainActivity extends AppCompatActivity {
         configureDueDateCalendar(this);
         configureDueTime(this);
 
-        configureNotifications();
-        configureNotificationTapAction();
-
-
-    }
-
-    private void configureNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notif_ChannelName);
-            String description = getString(R.string.notif_ChannelDescription);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
-    }
-
-    private void configureNotifications() {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel.getId())
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Test notification")
-                .setContentText("Test content")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notif = NotificationManagerCompat.from(this);
-        notif.notify(0, mBuilder.build());
-    }
-
-    private void configureNotificationTapAction() {
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, PACHYDERM_NOTIFICATION_ID)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        notif.configureNotifications();
     }
 
     private void configureCalendar() {
