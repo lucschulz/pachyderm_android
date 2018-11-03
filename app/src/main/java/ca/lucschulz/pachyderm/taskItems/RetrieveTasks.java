@@ -1,5 +1,6 @@
 package ca.lucschulz.pachyderm.taskItems;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,10 +18,12 @@ public class RetrieveTasks extends PopulateTaskItems {
 
     private Context context;
     private Notifications notifications;
+    private NotificationManager notificationManager;
 
-    public RetrieveTasks(Context context, Notifications notifications) {
+    public RetrieveTasks(Context context, NotificationManager notificationManager) {
         this.context = context;
-        this.notifications = notifications;
+        this.notificationManager = notificationManager;
+        this.notifications = new Notifications(context, notificationManager);
     }
 
 

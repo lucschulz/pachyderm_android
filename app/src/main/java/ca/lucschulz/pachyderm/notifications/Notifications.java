@@ -26,9 +26,10 @@ public class Notifications extends Activity {
 
     private static int notificationId;
 
-    public Notifications(Context context) {
+    public Notifications(Context context, NotificationManager notificationManager) {
         this.context = context;
         this.notificationId = 0;
+        configureNotificationChannel(notificationManager);
     }
 
 

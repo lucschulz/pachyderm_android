@@ -1,5 +1,6 @@
 package ca.lucschulz.pachyderm.taskItems;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -13,11 +14,11 @@ import ca.lucschulz.pachyderm.sql.SqlHelper;
 public class AddTask {
 
     private Context context;
-    private Notifications notifications;
+    private NotificationManager notificationManager;
 
-    public AddTask(Context context, Notifications notifications) {
+    public AddTask(Context context, NotificationManager notificationManager) {
         this.context = context;
-        this.notifications = notifications;
+        this.notificationManager = notificationManager;
     }
 
 
@@ -32,7 +33,7 @@ public class AddTask {
 
             taskList.clear();
 
-            RetrieveTasks retrieve = new RetrieveTasks(context, notifications);
+            RetrieveTasks retrieve = new RetrieveTasks(context, notificationManager);
             retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 

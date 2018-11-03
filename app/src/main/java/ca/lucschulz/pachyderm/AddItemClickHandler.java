@@ -1,5 +1,6 @@
 package ca.lucschulz.pachyderm;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
@@ -20,13 +21,13 @@ public class AddItemClickHandler {
     private Context context;
     private List<TaskItem> taskList;
     private TaskItemsAdapter tAdapter;
-    private Notifications notifications;
+    private NotificationManager notificationManager;
 
-    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter, Notifications notifications) {
+    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter, NotificationManager notificationManager) {
         this.context = context;
         this.taskList = taskList;
         this.tAdapter = tAdapter;
-        this.notifications = notifications;
+        this.notificationManager = notificationManager;
     }
 
     public void configureAddItemClickListener(Button btnAddItem, final EditText taskDescription, final EditText dueDate, final EditText dueTime) {
@@ -56,7 +57,7 @@ public class AddItemClickHandler {
                 taskItem.setDateDue(formattedDate);
 
 
-                AddTask addTask = new AddTask(context.getApplicationContext(), notifications);
+                AddTask addTask = new AddTask(context.getApplicationContext(), notificationManager);
                 try {
                     addTask.addNewTask(taskItem, taskList, tAdapter);
                 } catch (ParseException e) {

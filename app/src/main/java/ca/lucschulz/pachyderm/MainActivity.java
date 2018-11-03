@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
-    Notifications notifications;
-
+    private NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-        configureNotifications();
 
         configureCalendar();
 
@@ -69,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         configureEventListeners();
 
-        RetrieveTasks retrieve = new RetrieveTasks(this, notifications);
+
+        notificationManager = getSystemService(NotificationManager.class);
+        RetrieveTasks retrieve = new RetrieveTasks(this, notificationManager);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
@@ -80,12 +79,6 @@ public class MainActivity extends AppCompatActivity {
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
-    }
-
-    private void configureNotifications() {
-        notifications = new Notifications(this);
-        NotificationManager nm = getSystemService(NotificationManager.class);
-        notifications.configureNotificationChannel(nm);
     }
 
     private void configureCalendar() {
@@ -171,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         EditText dueDate = findViewById(R.id.etDueDate);
         EditText dueTime = findViewById(R.id.etDueTime);
 
-        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter, notifications);
+        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter, notificationManager);
         handler.configureAddItemClickListener(btnAddItem, taskDescription, dueDate, dueTime);
 
         clearTaskDescription();
