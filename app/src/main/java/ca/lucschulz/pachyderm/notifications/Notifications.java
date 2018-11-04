@@ -68,14 +68,14 @@ public class Notifications extends Activity {
 
     private void configureNotificationProperties(String title, String text) {
         mBuilder = new NotificationCompat.Builder(context, channel.getId())
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.mipmap.ic_cmc)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(getPendingIntent());
 
-        NotificationManagerCompat notif = NotificationManagerCompat.from(context);
-        notif.notify(notificationId++, mBuilder.build());
+        NotificationManagerCompat nmc = NotificationManagerCompat.from(context);
+        nmc.notify(notificationId++, mBuilder.build());
     }
 
     private PendingIntent getPendingIntent() {

@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
-    private NotificationManager notificationManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +62,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(tAdapter);
 
-        configureEventListeners();
+        configureEventListeners(getSystemService(NotificationManager.class));
 
 
-        notificationManager = getSystemService(NotificationManager.class);
-        RetrieveTasks retrieve = new RetrieveTasks(this, notificationManager);
+        RetrieveTasks retrieve = new RetrieveTasks(this, getSystemService(NotificationManager.class));
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
@@ -158,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         etDueTime.setText(time.format(calDueDate.getTime()));
     }
 
-    private void configureEventListeners() {
+    private void configureEventListeners(NotificationManager notificationManager) {
         Button btnAddItem = findViewById(R.id.btnAddItem);
         EditText taskDescription = findViewById(R.id.etAddItem);
         EditText dueDate = findViewById(R.id.etDueDate);
