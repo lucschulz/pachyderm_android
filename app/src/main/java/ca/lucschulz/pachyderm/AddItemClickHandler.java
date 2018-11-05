@@ -21,13 +21,11 @@ public class AddItemClickHandler {
     private Context context;
     private List<TaskItem> taskList;
     private TaskItemsAdapter tAdapter;
-    private NotificationManager notificationManager;
 
-    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter, NotificationManager notificationManager) {
+    public AddItemClickHandler(Context context, List<TaskItem> taskList, TaskItemsAdapter tAdapter) {
         this.context = context;
         this.taskList = taskList;
         this.tAdapter = tAdapter;
-        this.notificationManager = notificationManager;
     }
 
     public void configureAddItemClickListener(Button btnAddItem, final EditText taskDescription, final EditText dueDate, final EditText dueTime) {
@@ -57,7 +55,7 @@ public class AddItemClickHandler {
                 taskItem.setDateDue(formattedDate);
 
 
-                AddTask addTask = new AddTask(context.getApplicationContext(), notificationManager);
+                AddTask addTask = new AddTask(context.getApplicationContext());
                 try {
                     addTask.addNewTask(taskItem, taskList, tAdapter);
                 } catch (ParseException e) {

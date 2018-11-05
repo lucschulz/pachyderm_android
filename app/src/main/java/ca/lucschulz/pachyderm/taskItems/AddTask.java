@@ -14,11 +14,9 @@ import ca.lucschulz.pachyderm.sql.SqlHelper;
 public class AddTask {
 
     private Context context;
-    private NotificationManager notificationManager;
 
-    public AddTask(Context context, NotificationManager notificationManager) {
+    public AddTask(Context context) {
         this.context = context;
-        this.notificationManager = notificationManager;
     }
 
 
@@ -33,7 +31,7 @@ public class AddTask {
 
             taskList.clear();
 
-            RetrieveTasks retrieve = new RetrieveTasks(context, notificationManager);
+            RetrieveTasks retrieve = new RetrieveTasks(context);
             retrieve.retrieveTaskItems(taskList, tAdapter);
             tAdapter.notifyDataSetChanged();
 

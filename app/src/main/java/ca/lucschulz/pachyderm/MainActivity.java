@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(tAdapter);
 
-        configureEventListeners(getSystemService(NotificationManager.class));
+        configureEventListeners();
 
 
-        RetrieveTasks retrieve = new RetrieveTasks(this, getSystemService(NotificationManager.class));
+        RetrieveTasks retrieve = new RetrieveTasks(this);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
@@ -155,13 +155,13 @@ public class MainActivity extends AppCompatActivity {
         etDueTime.setText(time.format(calDueDate.getTime()));
     }
 
-    private void configureEventListeners(NotificationManager notificationManager) {
+    private void configureEventListeners() {
         Button btnAddItem = findViewById(R.id.btnAddItem);
         EditText taskDescription = findViewById(R.id.etAddItem);
         EditText dueDate = findViewById(R.id.etDueDate);
         EditText dueTime = findViewById(R.id.etDueTime);
 
-        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter, notificationManager);
+        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter);
         handler.configureAddItemClickListener(btnAddItem, taskDescription, dueDate, dueTime);
 
         clearTaskDescription();

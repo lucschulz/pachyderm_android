@@ -19,9 +19,9 @@ public class RetrieveTasks extends PopulateTaskItems {
     private Context context;
     private Notifications notifications;
 
-    public RetrieveTasks(Context context, NotificationManager notificationManager) {
+    public RetrieveTasks(Context context) {
         this.context = context;
-        this.notifications = new Notifications(context, notificationManager);
+        this.notifications = new Notifications(context, context.getSystemService(NotificationManager.class));
     }
 
 
