@@ -1,11 +1,14 @@
 package ca.lucschulz.pachyderm;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,13 +32,17 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 import ca.lucschulz.pachyderm.taskItems.RetrieveTasks;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
 import ca.lucschulz.pachyderm.taskItems.TaskItemsAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final String PACHYDERM_NOTIFICATION_ID = "pachyderm_notification_id";
+    private NotificationChannel channel;
+    private NotificationManagerCompat nmc;
+    NotificationManager notificationManager;
 
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
@@ -54,18 +61,16 @@ public class MainActivity extends AppCompatActivity {
 
         configureCalendar();
 
-        RecyclerView recyclerView = findViewById(R.id.rvMainList);
-        tAdapter = new TaskItemsAdapter(this, taskList);
+        notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(tAdapter);
+        configureNotificationChannel(notificationManager);
+
+        configureRecyclerView();
 
         configureEventListeners();
 
 
-        RetrieveTasks retrieve = new RetrieveTasks(this);
+        RetrieveTasks retrieve = new RetrieveTasks(this, channel, nmc);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
         } catch (ParseException e) {
@@ -76,6 +81,31 @@ public class MainActivity extends AppCompatActivity {
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
+    }
+
+    private void configureRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.rvMainList);
+        tAdapter = new TaskItemsAdapter(this, taskList);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(tAdapter);
+    }
+
+    public void configureNotificationChannel(NotificationManager notificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = getString(R.string.notif_ChannelName);
+            String description = getString(R.string.notif_ChannelDescription);
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, name, importance);
+            channel.setDescription(description);
+
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
     }
 
     private void configureCalendar() {

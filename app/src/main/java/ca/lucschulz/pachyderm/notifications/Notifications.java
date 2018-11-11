@@ -2,11 +2,9 @@ package ca.lucschulz.pachyderm.notifications;
 
 import android.app.Activity;
 import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -18,40 +16,18 @@ import ca.lucschulz.pachyderm.R;
 
 public class Notifications extends Activity {
 
-    private final String PACHYDERM_NOTIFICATION_ID = "pachyderm_notification_id";
-    private NotificationChannel channel;
-
     private Context context;
+    private NotificationChannel channel;
     private NotificationCompat.Builder mBuilder;
+    private NotificationManagerCompat nmc;
 
     private static int notificationId;
 
-    public Notifications(Context context, NotificationManager notificationManager) {
+    public Notifications(Context context, NotificationChannel channel, NotificationManagerCompat nmc) {
         this.context = context;
+        this.channel = channel;
         this.notificationId = 0;
-        configureNotificationChannel(notificationManager);
     }
-
-
-    public void configureNotificationChannel(NotificationManager notificationManager) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = getString(R.string.notif_ChannelName);
-//            String description = getString(R.string.notif_ChannelDescription);
-
-            CharSequence name = "Due date notification";
-            String description = "Pachyderm due date notification.";
-
-
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, name, importance);
-            channel.setDescription(description);
-
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        channel = new NotificationChannel(PACHYDERM_NOTIFICATION_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
-    }
-
 
     public void createNewNotification(final String title, final String text, Date dueDate) {
         Handler handler = new Handler();
@@ -74,7 +50,7 @@ public class Notifications extends Activity {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(getPendingIntent());
 
-        NotificationManagerCompat nmc = NotificationManagerCompat.from(context);
+        nmc = NotificationManagerCompat.from(context);
         nmc.notify(notificationId++, mBuilder.build());
     }
 
