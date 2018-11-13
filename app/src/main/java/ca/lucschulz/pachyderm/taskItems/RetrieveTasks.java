@@ -53,8 +53,9 @@ public class RetrieveTasks extends PopulateTaskItems {
     private void setDueDateReminder(TaskItem task) {
         String title = task.getTaskDescription();
         Date dueDate = task.getDateDue();
+        int idId = Integer.parseInt(task.getTaskId());
 
-        notifications.createNewNotification(title, "This task is overdue.", dueDate);
+        notifications.createNewNotification(title, "This task is overdue.", dueDate, idId);
     }
 
     private List<TaskItem> retrieveItems() throws ParseException {

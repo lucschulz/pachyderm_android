@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         EditText dueDate = findViewById(R.id.etDueDate);
         EditText dueTime = findViewById(R.id.etDueTime);
 
-        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter);
+        AddItemClickHandler handler = new AddItemClickHandler(this, taskList, tAdapter, channel, nmc);
         handler.configureAddItemClickListener(btnAddItem, taskDescription, dueDate, dueTime);
 
         clearTaskDescription();

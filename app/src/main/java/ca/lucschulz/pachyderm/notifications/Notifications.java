@@ -21,28 +21,26 @@ public class Notifications extends Activity {
     private NotificationCompat.Builder mBuilder;
     private NotificationManagerCompat nmc;
 
-    private static int notificationId;
-
     public Notifications(Context context, NotificationChannel channel, NotificationManagerCompat nmc) {
         this.context = context;
         this.channel = channel;
-        this.notificationId = 0;
+        this.nmc = nmc;
     }
 
-    public void createNewNotification(final String title, final String text, Date dueDate) {
+    public void createNewNotification(final String title, final String text, Date dueDate, final int dbId) {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                configureNotificationProperties(title, text);
+                configureNotificationProperties(title, text, dbId);
             }
         };
 
-        handler.postAtTime(runnable, dueDate.getTime());
-        handler.postDelayed(runnable, 1000);
+        long msUntilDue = dueDate.getTime() - System.currentTimeMillis();
+        handler.postDelayed(runnable, msUntilDue);
     }
 
-    private void configureNotificationProperties(String title, String text) {
+    private void configureNotificationProperties(String title, String text, int dbId) {
         mBuilder = new NotificationCompat.Builder(context, channel.getId())
                 .setSmallIcon(R.mipmap.ic_cmc)
                 .setContentTitle(title)
@@ -51,7 +49,7 @@ public class Notifications extends Activity {
                 .setContentIntent(getPendingIntent());
 
         nmc = NotificationManagerCompat.from(context);
-        nmc.notify(notificationId++, mBuilder.build());
+        nmc.notify(dbId, mBuilder.build());
     }
 
     private PendingIntent getPendingIntent() {
