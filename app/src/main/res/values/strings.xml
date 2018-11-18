@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Pachyderm</string>
+    <string name="app_versionNumber">1.1</string>
+    <string name="app_lastModified">Last Modified on November 18, 2018</string>
+    <string name="app_homepage">"https://www.lucschulz.ca/"</string>
+    <string name="app_webSitePretty">www.lucschulz.ca</string>
+
     <string name="todo">Todo</string>
     <string name="add_item">Add</string>
     <string name="name">Enter text here</string>
