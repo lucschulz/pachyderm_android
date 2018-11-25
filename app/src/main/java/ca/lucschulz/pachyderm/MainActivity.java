@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import ca.lucschulz.pachyderm.notifications.Notifications;
 import ca.lucschulz.pachyderm.sql.SqlHelper;
 import ca.lucschulz.pachyderm.taskItems.RetrieveTasks;
 import ca.lucschulz.pachyderm.taskItems.TaskItem;
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private final String PACHYDERM_NOTIFICATION_ID = "pachyderm_notification_id";
     private NotificationChannel channel;
     private NotificationManagerCompat nmc;
-    NotificationManager notificationManager;
+    private NotificationManager notificationManager;
+    private Notifications notifications;
 
     private List<TaskItem> taskList = new ArrayList<>();
     private TaskItemsAdapter tAdapter;
@@ -78,10 +80,21 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        this.notifications = retrieve.getNotifications();
+
         etDueDate = findViewById(R.id.etDueDate);
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
+    }
+
+    public Notifications getNotifications() {
+        return this.notifications;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void configureRecyclerView() {

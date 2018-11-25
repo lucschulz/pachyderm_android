@@ -1,6 +1,5 @@
 package ca.lucschulz.pachyderm.notifications;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,7 +13,7 @@ import java.util.Date;
 import ca.lucschulz.pachyderm.MainActivity;
 import ca.lucschulz.pachyderm.R;
 
-public class Notifications extends Activity {
+public class Notifications extends MainActivity {
 
     private Context context;
     private NotificationChannel channel;
@@ -46,16 +45,19 @@ public class Notifications extends Activity {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(getPendingIntent());
+                .setContentIntent(getPendingIntent(dbId));
 
         nmc = NotificationManagerCompat.from(context);
         nmc.notify(dbId, mBuilder.build());
     }
 
-    private PendingIntent getPendingIntent() {
+    // What happens when the notification is clicked on from the notifications menu.
+    private PendingIntent getPendingIntent(int dbId) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        nmc = NotificationManagerCompat.from(context);
+        nmc.cancel(dbId);
         return pendingIntent;
     }
 }

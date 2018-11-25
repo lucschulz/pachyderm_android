@@ -27,6 +27,11 @@ public class RetrieveTasks extends PopulateTaskItems {
     }
 
 
+    public Notifications getNotifications() {
+        return notifications;
+    }
+
+
     // taskList contains the items displayed in the Recycler. This method fills it up with what's in the database.
     // tAdapter is a reference to the adapter for the Recycler. Allows refreshing after the list is filled up.
     public void retrieveTaskItems(List<TaskItem> taskList, TaskItemsAdapter tAdapter) throws ParseException {
@@ -53,9 +58,12 @@ public class RetrieveTasks extends PopulateTaskItems {
     private void setDueDateReminder(TaskItem task) {
         String title = task.getTaskDescription();
         Date dueDate = task.getDateDue();
+        boolean completed = task.getCompleted();
         int idId = Integer.parseInt(task.getTaskId());
 
-        notifications.createNewNotification(title, "This task is overdue.", dueDate, idId);
+        if (!completed) {
+            notifications.createNewNotification(title, "This task is overdue.", dueDate, idId);
+        }
     }
 
     private List<TaskItem> retrieveItems() throws ParseException {
