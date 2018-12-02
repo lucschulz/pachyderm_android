@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
+    private int clickedNotificationId;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         configureEventListeners();
 
 
+        Bundle notificationId = getIntent().getExtras();
+        if (notificationId != null) {
+            int id = notificationId.getInt(Notifications.NOTIFICATION_ID);
+            nmc.cancel(id);
+        }
+
+
         RetrieveTasks retrieve = new RetrieveTasks(this, channel, nmc);
         try {
             retrieve.retrieveTaskItems(taskList, tAdapter);
@@ -86,10 +98,6 @@ public class MainActivity extends AppCompatActivity {
         etDueTime = findViewById(R.id.etDueTime);
         configureDueDateCalendar(this);
         configureDueTime(this);
-    }
-
-    public Notifications getNotifications() {
-        return this.notifications;
     }
 
     @Override

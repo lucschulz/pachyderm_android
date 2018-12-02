@@ -51,10 +51,14 @@ public class Notifications extends MainActivity {
         nmc.notify(dbId, mBuilder.build());
     }
 
+    public static String NOTIFICATION_ID = "NOTIFICATION_ID";
+
     // What happens when the notification is clicked on from the notifications menu.
     private PendingIntent getPendingIntent(int dbId) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra(NOTIFICATION_ID, dbId);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         nmc = NotificationManagerCompat.from(context);
         nmc.cancel(dbId);
