@@ -20,10 +20,12 @@ public class RetrieveTasks extends PopulateTaskItems {
 
     private Context context;
     private Notifications notifications;
+    private NotificationManagerCompat nmc;
 
     public RetrieveTasks(Context context, NotificationChannel channel, NotificationManagerCompat nmc) {
         this.context = context;
         this.notifications = new Notifications(context, channel, nmc);
+        this.nmc = nmc;
     }
 
 
@@ -58,11 +60,16 @@ public class RetrieveTasks extends PopulateTaskItems {
     private void setDueDateReminder(TaskItem task) {
         String title = task.getTaskDescription();
         Date dueDate = task.getDateDue();
+        boolean reminderSet = task.getReminder();
         boolean completed = task.getCompleted();
         int idId = Integer.parseInt(task.getTaskId());
 
-        if (!completed) {
+        if (!completed || reminderSet == true) {
             notifications.createNewNotification(title, "This task is overdue.", dueDate, idId);
+        }
+
+        if (reminderSet == false && nmc != null) {
+            nmc.cancel(idId);
         }
     }
 

@@ -37,16 +37,6 @@ public class SqlHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void createTables() {
-        SQLiteDatabase db = getWritableDatabase();
-        SqlTables sqlTables = new SqlTables();
-        String taskItems = sqlTables.createTaskItemsTable();
-        String settings = sqlTables.createSettingsTable();
-
-        db.execSQL(taskItems);
-        db.execSQL(settings);
-    }
-
     public void insertNewTaskItem(TaskItem taskItem) {
         try
         {
@@ -66,6 +56,7 @@ public class SqlHelper extends SQLiteOpenHelper {
             insertValues.put(SqlStrings.getKeyDateAdded(), sdfDateAdded);
             insertValues.put(SqlStrings.getKeyDateDue(), sdfDueDate);
             insertValues.put(SqlStrings.getKeyCompleted(), false);
+            insertValues.put(SqlStrings.getKeySetReminder(), true);
 
             db.insert(SqlStrings.getTableTaskItems(), null, insertValues);
         }
@@ -108,7 +99,27 @@ public class SqlHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public void dropTable() {
+    public boolean removeDueDateReminder(int taskId) {
+        String table = SqlStrings.getTableTaskItems();
+        String colReminder = SqlStrings.getKeySetReminder();
+        String colId = SqlStrings.getKeyId();
+
+        ContentValues values = new ContentValues();
+        values.put(colReminder, false);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        int recordsAffected = db.update(table, values, "id=?", new String[]{Integer.toString(taskId)});
+
+        if (recordsAffected > 0) {
+            return true;
+        }
+
+        db.close();
+
+        return false;
+    }
+
+    public void dropTables() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE task_items");
         db.execSQL("DROP TABLE settings");

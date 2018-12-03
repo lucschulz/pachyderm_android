@@ -15,6 +15,8 @@ public class SqlTables extends SqlStrings {
                 .append(" DATE, ")
                 .append(getKeyCompleted())
                 .append(" BIT, ")
+                .append(getKeySetReminder())
+                .append(" BOOLEAN, ")
                 .append(getKeyNotes())
                 .append(" TEXT)");
 

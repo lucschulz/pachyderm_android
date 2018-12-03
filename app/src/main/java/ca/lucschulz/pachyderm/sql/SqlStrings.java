@@ -10,6 +10,7 @@ public class SqlStrings {
     private static final String KEY_TASK_NAME = "task_name";
     private static final String KEY_DATE_ADDED = "date_added";
     private static final String KEY_DATE_DUE = "date_due";
+    private static final String KEY_SET_REMINDER = "set_reminder";
     private static final String KEY_COMPLETED = "completed";
     private static final String KEY_NOTES = "notes";
 
@@ -61,6 +62,10 @@ public class SqlStrings {
 
     public static String getKeySettingValue() {
         return KEY_SETTING_VALUE;
+    }
+
+    public static String getKeySetReminder() {
+        return KEY_SET_REMINDER;
     }
 
 

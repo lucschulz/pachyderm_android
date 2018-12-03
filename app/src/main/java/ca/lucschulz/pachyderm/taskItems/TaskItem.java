@@ -8,6 +8,7 @@ public class TaskItem {
     private String taskItem;
     private Date dateAdded;
     private Date dateDue;
+    private boolean reminder;
     private boolean completed;
     private String notes;
 
@@ -60,5 +61,13 @@ public class TaskItem {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public boolean getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(boolean reminder) {
+        this.reminder = reminder;
     }
 }

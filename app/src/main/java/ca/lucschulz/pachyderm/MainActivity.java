@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -55,9 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText etDueDate;
     private EditText etDueTime;
 
-    private int clickedNotificationId;
-
-
 
 
     @Override
@@ -81,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         Bundle notificationId = getIntent().getExtras();
         if (notificationId != null) {
             int id = notificationId.getInt(Notifications.NOTIFICATION_ID);
-            nmc.cancel(id);
+            SqlHelper helper = new SqlHelper(this);
+            helper.removeDueDateReminder(id);
         }
 
 
